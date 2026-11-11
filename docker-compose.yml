@@ -1,0 +1,104 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: indian-teacher-recruitment:latest
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      MONGODB_URI: ${MONGODB_URI:-mongodb://mongo:27017/indian_teacher_recruitment}
+    volumes:
+      - app_data:/app/data
+    expose:
+      - "3000"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - itr_network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  mongo:
+    image: mongo:7.0
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: indian_teacher_recruitment
+    volumes:
+      - mongo_data:/data/db
+      - mongo_backup_data:/backup
+    expose:
+      - "27017"
+    networks:
+      - itr_network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Automated Daily Database Backup Sidecar
+  mongo_backup:
+    image: mongo:7.0
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
+    volumes:
+      - mongo_backup_data:/backup
+    networks:
+      - itr_network
+    entrypoint: |
+      /bin/sh -c '
+      while true; do
+        DATE=$$(date +%Y%m%d_%H%M%S)
+        echo "[Backup] Starting automated MongoDB dump at $$(date)..."
+        mongodump --host mongo:27017 --db indian_teacher_recruitment --out /backup/dump_$$DATE
+        tar -czf /backup/itr_mongo_$$DATE.tar.gz -C /backup/dump_$$DATE .
+        rm -rf /backup/dump_$$DATE
+        # Retain last 30 daily backups
+        find /backup -name "itr_mongo_*.tar.gz" -mtime +30 -exec rm {} \;
+        echo "[Backup] Completed. Next backup in 24 hours."
+        sleep 86400
+      done'
+
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./deploy/certbot/conf:/etc/letsencrypt:ro
+      - ./deploy/certbot/www:/var/www/certbot:ro
+    networks:
+      - itr_network
+
+  # Automated Let's Encrypt SSL Certificate Renewer
+  certbot:
+    image: certbot/certbot:latest
+    restart: unless-stopped
+    volumes:
+      - ./deploy/certbot/conf:/etc/letsencrypt
+      - ./deploy/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while true; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+volumes:
+  mongo_data:
+  mongo_backup_data:
+  app_data:
+
+networks:
+  itr_network:
+    driver: bridge
