@@ -2,11 +2,12 @@ import { z } from "zod";
 
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "staging", "production"]).default("development"),
-  APP_NAME: z.string().default("Indian Teacher Recruitment Platform"),
-  APP_URL: z.string().url().default("http://localhost:3000"),
-  PORT: z.coerce.number().int().positive().default(3000),
+  APP_NAME: z.string().default("Career Avsar"),
+  APP_URL: z.string().url().default("https://careeravsar.in"),
+  PORT: z.coerce.number().int().positive().default(3003),
+  HOSTNAME: z.string().default("127.0.0.1"),
   MONGODB_URI: z.string().min(1).default("mongodb://localhost:27017/indian_teacher_recruitment"),
-  MONGODB_DB_NAME: z.string().min(1).default("indian_teacher_recruitment"),
+  MONGODB_DB_NAME: z.string().optional().default("career_avsar"),
   AUTH_SECRET: z.string().min(16).default("dev-only-replace-with-long-random-secret"),
   AUTH_TRUST_HOST: z
     .string()
@@ -32,6 +33,7 @@ const parsed = envSchema.safeParse({
   APP_NAME: process.env.APP_NAME,
   APP_URL: process.env.APP_URL,
   PORT: process.env.PORT,
+  HOSTNAME: process.env.HOSTNAME,
   MONGODB_URI: process.env.MONGODB_URI,
   MONGODB_DB_NAME: process.env.MONGODB_DB_NAME,
   AUTH_SECRET: process.env.AUTH_SECRET,
