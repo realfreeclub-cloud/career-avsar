@@ -4,19 +4,23 @@ const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 
-// Load .env if present
-const envPath = path.resolve(__dirname, "../.env");
-if (fs.existsSync(envPath)) {
-  const envContent = fs.readFileSync(envPath, "utf-8");
-  for (const line of envContent.split("\n")) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith("#")) continue;
-    const eqIdx = trimmed.indexOf("=");
-    if (eqIdx !== -1) {
-      const key = trimmed.slice(0, eqIdx).trim();
-      const val = trimmed.slice(eqIdx + 1).trim().replace(/^["']|["']$/g, "");
-      if (!process.env[key]) {
-        process.env[key] = val;
+// Load environment files (.env.production, .env.local, .env)
+const envFiles = [".env.production", ".env.local", ".env"];
+for (const ef of envFiles) {
+  const envPath = path.resolve(__dirname, `../${ef}`);
+  if (fs.existsSync(envPath)) {
+    console.log(`[ENV] Loading environment from ${ef}`);
+    const envContent = fs.readFileSync(envPath, "utf-8");
+    for (const line of envContent.split("\n")) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith("#")) continue;
+      const eqIdx = trimmed.indexOf("=");
+      if (eqIdx !== -1) {
+        const key = trimmed.slice(0, eqIdx).trim();
+        const val = trimmed.slice(eqIdx + 1).trim().replace(/^["']|["']$/g, "");
+        if (!process.env[key]) {
+          process.env[key] = val;
+        }
       }
     }
   }
@@ -290,6 +294,148 @@ async function run() {
     { upsert: true }
   );
   console.log("\n✓ System settings: teacher_login=true, school_login=true, teacher_registration=true");
+
+  // Seed Verified Institutional Job Vacancies
+  console.log("\n[SEEDING VERIFIED VACANCIES FOR JOBS EXPLORER]");
+  const sampleJobs = [
+    {
+      title: "Senior PGT Mathematics Faculty",
+      slug: "senior-pgt-mathematics-pratapgarh",
+      schoolName: "Delhi Public Academy",
+      location: {
+        city: "Bela Pratapgarh",
+        district: "Pratapgarh",
+        state: "Uttar Pradesh",
+      },
+      subject: "Mathematics",
+      category: "PGT",
+      qualification: "M.Sc Mathematics, B.Ed",
+      trainingRequirements: "B.Ed Required",
+      ctetRequired: "CTET Paper 2 Preferred",
+      minExperience: 3,
+      maxExperience: 8,
+      experience: "3-8 Years",
+      salaryMinInr: 38000,
+      salaryMaxInr: 52000,
+      salaryPeriod: "monthly",
+      vacanciesCount: 2,
+      employmentType: "Full-time",
+      board: "CBSE",
+      description: "Seeking a passionate Senior Secondary Mathematics teacher capable of coaching students for CBSE Class 11 and 12 Board curricula.",
+      responsibilities: ["Deliver senior secondary math curriculum", "Conduct mock board evaluations", "Mentor students for competitive entrance exams"],
+      requirements: ["Postgraduate degree in Mathematics", "B.Ed from recognized NCTE college", "Minimum 3 years CBSE teaching experience"],
+      applicationDeadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      interviewMode: "Hybrid",
+      status: "published",
+      isPublic: true,
+      publishedAt: new Date(),
+    },
+    {
+      title: "TGT Science & Biology Educator",
+      slug: "tgt-science-biology-prayagraj",
+      schoolName: "St. Xavier's International School",
+      location: {
+        city: "Civil Lines",
+        district: "Prayagraj",
+        state: "Uttar Pradesh",
+      },
+      subject: "Science",
+      category: "TGT",
+      qualification: "B.Sc (PCB), B.Ed",
+      trainingRequirements: "B.Ed Mandatory",
+      ctetRequired: "CTET / UPTET Paper 2 Qualified",
+      minExperience: 2,
+      maxExperience: 6,
+      experience: "2-6 Years",
+      salaryMinInr: 30000,
+      salaryMaxInr: 42000,
+      salaryPeriod: "monthly",
+      vacanciesCount: 1,
+      employmentType: "Full-time",
+      board: "ICSE",
+      description: "Lead science practical labs and classroom sessions for middle and secondary grades (6th to 10th).",
+      responsibilities: ["Design engaging laboratory experiments", "Teach general science and biology", "Track student academic development"],
+      requirements: ["B.Sc with Biology/Chemistry", "Valid B.Ed credential", "CTET or State TET certified"],
+      applicationDeadline: new Date(Date.now() + 25 * 24 * 60 * 60 * 1000),
+      interviewMode: "Online",
+      status: "published",
+      isPublic: true,
+      publishedAt: new Date(),
+    },
+    {
+      title: "Foundational PRT Primary Educator",
+      slug: "prt-primary-educator-sultanpur",
+      schoolName: "Sunbeam Global School",
+      location: {
+        city: "Sultanpur City",
+        district: "Sultanpur",
+        state: "Uttar Pradesh",
+      },
+      subject: "All Subjects",
+      category: "PRT",
+      qualification: "Graduation with D.El.Ed / B.Ed",
+      trainingRequirements: "D.El.Ed / B.El.Ed / B.Ed",
+      ctetRequired: "CTET / UPTET Paper 1 Qualified",
+      minExperience: 1,
+      maxExperience: 4,
+      experience: "1-4 Years",
+      salaryMinInr: 22000,
+      salaryMaxInr: 32000,
+      salaryPeriod: "monthly",
+      vacanciesCount: 3,
+      employmentType: "Full-time",
+      board: "CBSE",
+      description: "Energetic and child-centric primary teachers needed to foster early literacy, numeracy, and holistic activity-based learning.",
+      responsibilities: ["Manage primary classroom activities", "Develop thematic lesson plans", "Engage parents through regular progress dialogue"],
+      requirements: ["Graduate in any discipline", "NCTE recognized teacher training diploma", "Fluency in spoken Hindi and English"],
+      applicationDeadline: new Date(Date.now() + 35 * 24 * 60 * 60 * 1000),
+      interviewMode: "In-person",
+      status: "published",
+      isPublic: true,
+      publishedAt: new Date(),
+    },
+    {
+      title: "PGT English Literature Faculty",
+      slug: "pgt-english-literature-jaunpur",
+      schoolName: "Heritage Public Inter College",
+      location: {
+        city: "Jaunpur City",
+        district: "Jaunpur",
+        state: "Uttar Pradesh",
+      },
+      subject: "English",
+      category: "PGT",
+      qualification: "M.A English, B.Ed",
+      trainingRequirements: "B.Ed Required",
+      ctetRequired: "CTET Paper 2 Preferred",
+      minExperience: 3,
+      maxExperience: 10,
+      experience: "3-10 Years",
+      salaryMinInr: 35000,
+      salaryMaxInr: 48000,
+      salaryPeriod: "monthly",
+      vacanciesCount: 1,
+      employmentType: "Full-time",
+      board: "UP State Board",
+      description: "Direct teaching for higher secondary English language and literature with focus on effective communication and critical comprehension.",
+      responsibilities: ["Teach Class 11 and 12 English", "Organize literary events, debates, and annual school magazine"],
+      requirements: ["Master's in English Literature", "B.Ed degree", "Strong command over English grammar and phonetics"],
+      applicationDeadline: new Date(Date.now() + 40 * 24 * 60 * 60 * 1000),
+      interviewMode: "Online",
+      status: "published",
+      isPublic: true,
+      publishedAt: new Date(),
+    },
+  ];
+
+  for (const job of sampleJobs) {
+    await db.collection("jobs").updateOne(
+      { slug: job.slug },
+      { $set: { ...job, updatedAt: new Date() } },
+      { upsert: true }
+    );
+    console.log(`✓ Job Vacancy [${job.title}] verified in ${job.location.district}.`);
+  }
 
   await mongoose.disconnect();
   console.log("\n>>> ALL DEMO ACCOUNTS AND DISTRICTS RESET & VERIFIED SUCCESSFULLY <<<\n");
