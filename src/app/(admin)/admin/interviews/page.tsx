@@ -338,13 +338,13 @@ export default function AdminInterviewsPage() {
       title="Interview Coordination & Panel Scheduling"
       subtitle="Coordinate evaluation rounds, schedule video or campus demonstrations, review attendance, and record selection outcomes."
       actions={
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
           {/* View Mode Toggle */}
           <div className="flex items-center rounded-xl border border-border bg-[#FAF9F5] p-1">
             <button
               type="button"
               onClick={() => setViewMode("calendar")}
-              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+              className={`flex items-center gap-1.5 rounded-lg px-2.5 sm:px-3 py-1.5 text-xs font-semibold transition ${
                 viewMode === "calendar"
                   ? "bg-white text-primary shadow-xs border border-border/80"
                   : "text-secondary hover:text-primary"
@@ -356,7 +356,7 @@ export default function AdminInterviewsPage() {
             <button
               type="button"
               onClick={() => setViewMode("list")}
-              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+              className={`flex items-center gap-1.5 rounded-lg px-2.5 sm:px-3 py-1.5 text-xs font-semibold transition ${
                 viewMode === "list"
                   ? "bg-white text-primary shadow-xs border border-border/80"
                   : "text-secondary hover:text-primary"
@@ -374,9 +374,10 @@ export default function AdminInterviewsPage() {
               resetScheduleForm();
               setScheduleModalOpen(true);
             }}
+            className="shrink-0 text-xs sm:text-sm"
           >
             <Plus className="mr-1.5 size-4" />
-            Schedule Round
+            <span>Schedule Round</span>
           </Button>
         </div>
       }
@@ -422,20 +423,21 @@ export default function AdminInterviewsPage() {
           </Card>
 
           {/* Desktop & Tablet Monthly Grid */}
-          <div className="hidden sm:block overflow-hidden rounded-xl border border-border bg-white shadow-sm">
-            {/* Day of Week Labels */}
-            <div className="grid grid-cols-7 border-b border-border bg-soft-blue/70 text-center text-xs font-semibold uppercase tracking-wider text-primary py-2.5">
-              <span>Sun</span>
-              <span>Mon</span>
-              <span>Tue</span>
-              <span>Wed</span>
-              <span>Thu</span>
-              <span>Fri</span>
-              <span>Sat</span>
-            </div>
+          <div className="hidden sm:block overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
+            <div className="min-w-[620px]">
+              {/* Day of Week Labels */}
+              <div className="grid grid-cols-7 border-b border-border bg-soft-blue/70 text-center text-xs font-semibold uppercase tracking-wider text-primary py-2.5">
+                <span>Sun</span>
+                <span>Mon</span>
+                <span>Tue</span>
+                <span>Wed</span>
+                <span>Thu</span>
+                <span>Fri</span>
+                <span>Sat</span>
+              </div>
 
-            {/* Days Grid */}
-            <div className="grid grid-cols-7 divide-x divide-y divide-border/60">
+              {/* Days Grid */}
+              <div className="grid grid-cols-7 divide-x divide-y divide-border/60">
               {/* Empty leading padding cells */}
               {Array.from({ length: firstDayIndex }).map((_, i) => (
                 <div key={`empty-${i}`} className="min-h-[110px] bg-[#FAF9F5]/40 p-2" />
@@ -519,6 +521,7 @@ export default function AdminInterviewsPage() {
                   </div>
                 );
               })}
+            </div>
             </div>
           </div>
 

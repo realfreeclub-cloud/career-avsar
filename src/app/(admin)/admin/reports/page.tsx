@@ -154,15 +154,16 @@ export default function AdminReportsPage() {
       title="Analytics & Institutional Reports"
       subtitle="Real-time operational metrics, talent distribution, vacancy performance, and institutional recruitment velocity."
       actions={
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
           <Button
             variant="outline"
             size="sm"
             onClick={() => downloadCsv("summary")}
-            className="gap-1.5 border-border bg-white text-secondary hover:bg-soft-blue"
+            className="gap-1.5 border-border bg-white text-secondary hover:bg-soft-blue shrink-0"
           >
             <Download className="size-4 text-accent-gold" />
-            <span>Export Platform Summary (CSV)</span>
+            <span className="hidden sm:inline">Export Platform Summary (CSV)</span>
+            <span className="sm:hidden">Export CSV</span>
           </Button>
 
           <Button
@@ -170,7 +171,7 @@ export default function AdminReportsPage() {
             size="icon"
             onClick={loadReports}
             title="Refresh analytics"
-            className="text-muted hover:bg-soft-blue hover:text-primary"
+            className="text-muted hover:bg-soft-blue hover:text-primary shrink-0"
           >
             <RefreshCw className={cn("size-4", loading && "animate-spin text-secondary")} />
           </Button>
@@ -178,7 +179,7 @@ export default function AdminReportsPage() {
       }
     >
       {/* Date Range & Presets Filter Panel */}
-      <Card className="p-4 bg-white border-border/80 shadow-2xs">
+      <Card className="p-3.5 sm:p-4 bg-white border-border/80 shadow-2xs">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-wrap items-center gap-1.5">
             <span className="text-xs font-bold uppercase tracking-wider text-muted mr-1.5 flex items-center gap-1">
@@ -216,7 +217,7 @@ export default function AdminReportsPage() {
                 setFromDate(e.target.value);
                 setPreset("all");
               }}
-              className="rounded-lg border border-border bg-[#FAF9F5] px-2.5 py-1 text-xs text-text focus:border-secondary focus:bg-white focus:outline-none"
+              className="rounded-lg border border-border bg-[#FAF9F5] px-2 py-1 text-xs text-text focus:border-secondary focus:bg-white focus:outline-none max-w-[130px] sm:max-w-none"
             />
             <span className="text-xs text-muted">to</span>
             <input
@@ -226,7 +227,7 @@ export default function AdminReportsPage() {
                 setToDate(e.target.value);
                 setPreset("all");
               }}
-              className="rounded-lg border border-border bg-[#FAF9F5] px-2.5 py-1 text-xs text-text focus:border-secondary focus:bg-white focus:outline-none"
+              className="rounded-lg border border-border bg-[#FAF9F5] px-2 py-1 text-xs text-text focus:border-secondary focus:bg-white focus:outline-none max-w-[130px] sm:max-w-none"
             />
             {(fromDate || toDate) ? (
               <button
@@ -246,59 +247,59 @@ export default function AdminReportsPage() {
       </Card>
 
       {/* KPI Highlight Tiles */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-        <div className="rounded-xl border border-border bg-white p-4 shadow-2xs">
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="rounded-xl border border-border bg-white p-3.5 sm:p-4 shadow-2xs min-w-0">
           <div className="flex items-center justify-between text-muted">
-            <span className="text-[11px] font-semibold uppercase tracking-wider">Teachers</span>
-            <Users className="size-4 text-primary" />
+            <span className="text-[11px] font-semibold uppercase tracking-wider truncate">Teachers</span>
+            <Users className="size-4 text-primary shrink-0" />
           </div>
-          <p className="mt-2 font-serif text-2xl font-bold text-primary">{data?.totals.teachers ?? 0}</p>
-          <span className="text-[10px] text-muted">Registered educators</span>
+          <p className="mt-2 font-serif text-2xl font-bold text-primary truncate">{data?.totals.teachers ?? 0}</p>
+          <span className="text-[10px] text-muted truncate block">Registered educators</span>
         </div>
 
-        <div className="rounded-xl border border-border bg-white p-4 shadow-2xs">
+        <div className="rounded-xl border border-border bg-white p-3.5 sm:p-4 shadow-2xs min-w-0">
           <div className="flex items-center justify-between text-muted">
-            <span className="text-[11px] font-semibold uppercase tracking-wider">Schools</span>
-            <Building2 className="size-4 text-secondary" />
+            <span className="text-[11px] font-semibold uppercase tracking-wider truncate">Schools</span>
+            <Building2 className="size-4 text-secondary shrink-0" />
           </div>
-          <p className="mt-2 font-serif text-2xl font-bold text-secondary">{data?.totals.schools ?? 0}</p>
-          <span className="text-[10px] text-muted">Affiliated institutions</span>
+          <p className="mt-2 font-serif text-2xl font-bold text-secondary truncate">{data?.totals.schools ?? 0}</p>
+          <span className="text-[10px] text-muted truncate block">Affiliated institutions</span>
         </div>
 
-        <div className="rounded-xl border border-border bg-white p-4 shadow-2xs">
+        <div className="rounded-xl border border-border bg-white p-3.5 sm:p-4 shadow-2xs min-w-0">
           <div className="flex items-center justify-between text-muted">
-            <span className="text-[11px] font-semibold uppercase tracking-wider">Vacancies</span>
-            <Briefcase className="size-4 text-accent-gold" />
+            <span className="text-[11px] font-semibold uppercase tracking-wider truncate">Vacancies</span>
+            <Briefcase className="size-4 text-accent-gold shrink-0" />
           </div>
-          <p className="mt-2 font-serif text-2xl font-bold text-primary">{data?.totals.jobs ?? 0}</p>
-          <span className="text-[10px] text-muted">Teaching positions</span>
+          <p className="mt-2 font-serif text-2xl font-bold text-primary truncate">{data?.totals.jobs ?? 0}</p>
+          <span className="text-[10px] text-muted truncate block">Teaching positions</span>
         </div>
 
-        <div className="rounded-xl border border-border bg-white p-4 shadow-2xs">
+        <div className="rounded-xl border border-border bg-white p-3.5 sm:p-4 shadow-2xs min-w-0">
           <div className="flex items-center justify-between text-muted">
-            <span className="text-[11px] font-semibold uppercase tracking-wider">Applications</span>
-            <FileText className="size-4 text-primary" />
+            <span className="text-[11px] font-semibold uppercase tracking-wider truncate">Applications</span>
+            <FileText className="size-4 text-primary shrink-0" />
           </div>
-          <p className="mt-2 font-serif text-2xl font-bold text-primary">{data?.totals.applications ?? 0}</p>
-          <span className="text-[10px] text-muted">Submitted dossiers</span>
+          <p className="mt-2 font-serif text-2xl font-bold text-primary truncate">{data?.totals.applications ?? 0}</p>
+          <span className="text-[10px] text-muted truncate block">Submitted dossiers</span>
         </div>
 
-        <div className="rounded-xl border border-border bg-white p-4 shadow-2xs">
+        <div className="rounded-xl border border-border bg-white p-3.5 sm:p-4 shadow-2xs min-w-0">
           <div className="flex items-center justify-between text-muted">
-            <span className="text-[11px] font-semibold uppercase tracking-wider">Interviews</span>
-            <CalendarDays className="size-4 text-secondary" />
+            <span className="text-[11px] font-semibold uppercase tracking-wider truncate">Interviews</span>
+            <CalendarDays className="size-4 text-secondary shrink-0" />
           </div>
-          <p className="mt-2 font-serif text-2xl font-bold text-secondary">{data?.totals.interviews ?? 0}</p>
-          <span className="text-[10px] text-muted">Conducted rounds</span>
+          <p className="mt-2 font-serif text-2xl font-bold text-secondary truncate">{data?.totals.interviews ?? 0}</p>
+          <span className="text-[10px] text-muted truncate block">Conducted rounds</span>
         </div>
 
-        <div className="rounded-xl border border-border bg-white p-4 shadow-2xs">
+        <div className="rounded-xl border border-border bg-white p-3.5 sm:p-4 shadow-2xs min-w-0">
           <div className="flex items-center justify-between text-muted">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-700">Placements</span>
-            <Award className="size-4 text-emerald-600" />
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-700 truncate">Placements</span>
+            <Award className="size-4 text-emerald-600 shrink-0" />
           </div>
-          <p className="mt-2 font-serif text-2xl font-bold text-emerald-800">{data?.totals.placements ?? 0}</p>
-          <span className="text-[10px] text-emerald-700 font-medium">Joined faculty</span>
+          <p className="mt-2 font-serif text-2xl font-bold text-emerald-800 truncate">{data?.totals.placements ?? 0}</p>
+          <span className="text-[10px] text-emerald-700 font-medium truncate block">Joined faculty</span>
         </div>
       </div>
 

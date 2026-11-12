@@ -10,9 +10,20 @@ export type ModalProps = {
   description?: string;
   children: React.ReactNode;
   className?: string;
+  size?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl";
 };
 
-export function Modal({ open, onClose, title, description, children, className }: ModalProps) {
+const sizeClasses: Record<NonNullable<ModalProps["size"]>, string> = {
+  sm: "sm:max-w-sm",
+  md: "sm:max-w-md",
+  lg: "sm:max-w-lg",
+  xl: "sm:max-w-xl",
+  "2xl": "sm:max-w-2xl",
+  "3xl": "sm:max-w-3xl",
+  "4xl": "sm:max-w-4xl",
+};
+
+export function Modal({ open, onClose, title, description, children, className, size = "lg" }: ModalProps) {
   const titleId = React.useId();
 
   React.useEffect(() => {
@@ -47,7 +58,8 @@ export function Modal({ open, onClose, title, description, children, className }
         aria-modal="true"
         aria-labelledby={titleId}
         className={cn(
-          "relative z-10 max-h-[90dvh] w-full overflow-y-auto rounded-t-2xl border border-border bg-white p-5 shadow-2xl sm:max-w-lg sm:rounded-2xl sm:p-6",
+          "relative z-10 max-h-[90dvh] w-full overflow-y-auto rounded-t-2xl border border-border bg-white p-4 shadow-2xl sm:rounded-2xl sm:p-6",
+          sizeClasses[size],
           className,
         )}
       >

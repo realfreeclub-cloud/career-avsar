@@ -20,12 +20,12 @@ export function AdminPage({
 }) {
   return (
     <div className="space-y-5">
-      <header className="flex flex-col gap-4 rounded-2xl border border-border bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:p-6">
-        <div>
-          <h1 className="font-serif text-2xl font-bold text-primary sm:text-3xl">{title}</h1>
-          {subtitle ? <p className="mt-1 text-sm text-muted">{subtitle}</p> : null}
+      <header className="flex flex-col gap-3 rounded-2xl border border-border bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:p-6">
+        <div className="min-w-0">
+          <h1 className="font-serif text-xl font-bold text-primary sm:text-2xl lg:text-3xl break-words">{title}</h1>
+          {subtitle ? <p className="mt-1 text-xs sm:text-sm text-muted leading-relaxed">{subtitle}</p> : null}
         </div>
-        {actions ? <div className="flex flex-wrap gap-2.5">{actions}</div> : null}
+        {actions ? <div className="flex flex-wrap items-center gap-2 sm:shrink-0 w-full sm:w-auto">{actions}</div> : null}
       </header>
       {children}
     </div>

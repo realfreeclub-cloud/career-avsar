@@ -138,7 +138,7 @@ export function RegisterForm() {
             disabled={busy}
             className="bg-primary hover:bg-secondary text-white font-medium"
           >
-            <span>{busy ? "Creating account…" : "Create Account &amp; Continue Profile"}</span>
+            <span>{busy ? "Creating account…" : "Create Account & Continue Profile"}</span>
             <ArrowRight aria-hidden className="size-4 text-accent-gold" />
           </Button>
         </form>

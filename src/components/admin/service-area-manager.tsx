@@ -194,15 +194,15 @@ export function ServiceAreaManager() {
   return (
     <div className="space-y-6">
       {/* Metric Highlights */}
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <Card className="p-4 border-border/80 bg-white">
           <div className="flex items-center gap-3">
             <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200">
               <CheckCircle2 className="size-5" />
             </span>
-            <div>
-              <p className="text-xs font-semibold text-muted">Active Launch Districts</p>
-              <p className="font-serif text-xl font-bold text-primary">{activeCount} of {locations.length}</p>
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-semibold text-muted truncate">Active Launch Districts</p>
+              <p className="font-serif text-lg sm:text-xl font-bold text-primary truncate">{activeCount} of {locations.length}</p>
             </div>
           </div>
         </Card>
@@ -212,9 +212,9 @@ export function ServiceAreaManager() {
             <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-soft-blue text-secondary border border-[#D5DFEB]">
               <MapPin className="size-5" />
             </span>
-            <div>
-              <p className="text-xs font-semibold text-muted">Initial Target State</p>
-              <p className="font-serif text-xl font-bold text-primary">Uttar Pradesh</p>
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-semibold text-muted truncate">Initial Target State</p>
+              <p className="font-serif text-lg sm:text-xl font-bold text-primary truncate">Uttar Pradesh</p>
             </div>
           </div>
         </Card>
@@ -224,9 +224,9 @@ export function ServiceAreaManager() {
             <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#FAF5EB] text-[#8F7032] border border-[#E9DCBF]">
               <Building className="size-5" />
             </span>
-            <div>
-              <p className="text-xs font-semibold text-muted">Published Vacancies</p>
-              <p className="font-serif text-xl font-bold text-primary">{totalJobs} Active Openings</p>
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-semibold text-muted truncate">Published Vacancies</p>
+              <p className="font-serif text-lg sm:text-xl font-bold text-primary truncate">{totalJobs} Active Openings</p>
             </div>
           </div>
         </Card>
@@ -248,16 +248,16 @@ export function ServiceAreaManager() {
 
       {/* Action Bar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
+        <div className="min-w-0">
           <h3 className="font-serif text-base font-bold text-primary sm:text-lg">District Service Locations</h3>
           <p className="text-xs text-muted">Manage active regional districts, display priority, and custom SEO landing configurations.</p>
         </div>
-        <div className="flex items-center gap-2">
-          <Button variant="secondary" onClick={loadLocations} disabled={loading} size="sm">
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
+          <Button variant="secondary" onClick={loadLocations} disabled={loading} size="sm" className="shrink-0">
             <RefreshCw className={cn("size-3.5", loading && "animate-spin text-secondary")} />
             <span>Refresh</span>
           </Button>
-          <Button onClick={openCreateModal} size="sm" className="bg-primary hover:bg-secondary text-white font-medium">
+          <Button onClick={openCreateModal} size="sm" className="bg-primary hover:bg-secondary text-white font-medium shrink-0">
             <Plus className="size-4 text-accent-gold" />
             <span>Add District</span>
           </Button>

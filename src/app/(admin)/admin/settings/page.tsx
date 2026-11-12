@@ -195,12 +195,12 @@ export default function AdminSettingsPage() {
       ) : null}
 
       {/* Settings Navigation Tabs */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-border/80 pb-3 mb-6">
+      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 border-b border-border/80 pb-3 mb-6">
         <button
           type="button"
           onClick={() => setActiveTab("locations")}
           className={cn(
-            "rounded-xl px-4 py-2 text-xs font-bold transition flex items-center gap-2",
+            "rounded-xl px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-bold transition flex items-center gap-1.5 sm:gap-2 shrink-0",
             activeTab === "locations"
               ? "bg-primary text-white shadow-sm"
               : "bg-white text-muted hover:text-primary border border-border/80",
@@ -214,7 +214,7 @@ export default function AdminSettingsPage() {
           type="button"
           onClick={() => setActiveTab("toggles")}
           className={cn(
-            "rounded-xl px-4 py-2 text-xs font-bold transition flex items-center gap-2",
+            "rounded-xl px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-bold transition flex items-center gap-1.5 sm:gap-2 shrink-0",
             activeTab === "toggles"
               ? "bg-primary text-white shadow-sm"
               : "bg-white text-muted hover:text-primary border border-border/80",
@@ -228,7 +228,7 @@ export default function AdminSettingsPage() {
           type="button"
           onClick={() => setActiveTab("backups")}
           className={cn(
-            "rounded-xl px-4 py-2 text-xs font-bold transition flex items-center gap-2",
+            "rounded-xl px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-bold transition flex items-center gap-1.5 sm:gap-2 shrink-0",
             activeTab === "backups"
               ? "bg-primary text-white shadow-sm"
               : "bg-white text-muted hover:text-primary border border-border/80",

@@ -314,7 +314,7 @@ export function TeacherProfileClient() {
             </Button>
             {step < 6 ? (
               <Button onClick={nextStep} disabled={saving} className="bg-primary hover:bg-secondary text-white font-medium">
-                {saving ? <><Loader2 className="animate-spin size-4" aria-hidden /> Saving…</> : <>Save &amp; continue <ChevronRight aria-hidden className="size-4" /></>}
+                {saving ? <><Loader2 className="animate-spin size-4" aria-hidden /> Saving…</> : <>Save & continue <ChevronRight aria-hidden className="size-4" /></>}
               </Button>
             ) : (
               <Button onClick={submitRegistration} disabled={saving} className="bg-primary hover:bg-secondary text-white font-medium">
@@ -633,7 +633,7 @@ function Step2({
 
 function Step3({ value: d, errors, onChange }: { value: ProfileDto; errors: Errs; onChange: (fn: (d: ProfileDto) => void) => void }) {
   return (
-    <GlassPanel title="Academic &amp; Professional Qualifications" description="Teaching degree qualifications, eligibility scores, and subject degrees.">
+    <GlassPanel title="Academic & Professional Qualifications" description="Teaching degree qualifications, eligibility scores, and subject degrees.">
       <div className="grid gap-4 sm:grid-cols-2">
         <Select label="Highest Academic Qualification *" value={d.education.highestQualification} onChange={(e) => onChange((x) => { x.education.highestQualification = e.target.value; })} error={errors.highestQualification} placeholder="Select" options={QUALIFICATION_LEVELS.map((v) => ({ value: v, label: v }))} />
         <Input label="Graduation Degree" value={d.education.graduation} onChange={(e) => onChange((x) => { x.education.graduation = e.target.value; })} placeholder="e.g. B.Sc. Mathematics (Honours)" />
@@ -658,7 +658,7 @@ function Step3({ value: d, errors, onChange }: { value: ProfileDto; errors: Errs
 
 function Step4({ value: d, errors, onChange }: { value: ProfileDto; errors: Errs; onChange: (fn: (d: ProfileDto) => void) => void }) {
   return (
-    <GlassPanel title="Experience &amp; Career Background" description="Details of previous institutional tenures and remuneration expectations.">
+    <GlassPanel title="Experience & Career Background" description="Details of previous institutional tenures and remuneration expectations.">
       <div className="grid gap-4 sm:grid-cols-2">
         <Select label="Experience Standing" value={d.experience.status} onChange={(e) => onChange((x) => { x.experience.status = e.target.value; })} placeholder="Select" options={[{ value: "", label: "Select" }, { value: "fresher", label: "Fresher (Entry Level)" }, { value: "experienced", label: "Experienced Educator" }]} />
         <Input label={`Total Experience (Years)${d.experience.status === "experienced" ? " *" : ""}`} type="number" min={0} max={60} value={d.experience.totalYears} onChange={(e) => onChange((x) => { x.experience.totalYears = e.target.value === "" ? "" : Number(e.target.value); })} error={errors.totalYears} />
@@ -693,7 +693,7 @@ function Step5({ value: d, errors, onChange }: { value: ProfileDto; errors: Errs
 function ProfileOverview({ profile: p, onEdit }: { profile: ProfileDto; onEdit: () => void }) {
   return (
     <div className="grid gap-5 lg:grid-cols-2">
-      <GlassPanel title="Personal &amp; Location Overview" description="Core identity and verified geographical presence.">
+      <GlassPanel title="Personal & Location Overview" description="Core identity and verified geographical presence.">
         <dl className="grid gap-3 text-sm sm:grid-cols-2">
           <KV k="Legal Name" v={p.personal.fullName} />
           <KV k="Email" v={p.personal.email} />

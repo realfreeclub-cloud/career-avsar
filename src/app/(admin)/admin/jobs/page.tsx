@@ -746,6 +746,7 @@ export default function AdminJobsPage() {
         open={editorOpen}
         onClose={() => setEditorOpen(false)}
         title={editorMode === "create" ? "Create Institutional Job Vacancy" : `Edit Vacancy: ${title}`}
+        size="3xl"
       >
         <div className="space-y-4">
           {/* Tab Selector: Form Editor vs Live Preview */}
@@ -779,7 +780,7 @@ export default function AdminJobsPage() {
           {editorTab === "form" ? (
             <form onSubmit={handleSaveJob} className="space-y-4 max-h-[72dvh] overflow-y-auto pr-1">
               {/* Basic Position Details */}
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Input
                   label="Vacancy / Position Title"
                   placeholder="e.g. Senior PGT Mathematics"
@@ -787,7 +788,7 @@ export default function AdminJobsPage() {
                   onChange={(e) => setTitle(e.target.value)}
                   required
                 />
-                <div>
+                <div className="min-w-0">
                   <label className="block text-xs font-semibold text-primary mb-1">Partner School / Institution (CRM)</label>
                   <select
                     value={selectedInstitutionId}
@@ -804,7 +805,7 @@ export default function AdminJobsPage() {
                         }
                       }
                     }}
-                    className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm text-primary focus:border-secondary focus:outline-none"
+                    className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm text-primary focus:border-secondary focus:outline-none truncate"
                   >
                     <option value="">-- Select Verified School from CRM --</option>
                     {schoolOptions.map((s) => (
@@ -855,13 +856,13 @@ export default function AdminJobsPage() {
               </div>
 
               {/* Categorization & Affiliation */}
-              <div className="grid gap-3 sm:grid-cols-3">
-                <div>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="min-w-0">
                   <label className="block text-xs font-semibold text-primary mb-1">Job Category</label>
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm text-primary focus:border-secondary focus:outline-none"
+                    className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm text-primary focus:border-secondary focus:outline-none truncate"
                   >
                     {categories.map((c) => (
                       <option key={c} value={c}>{c}</option>
@@ -869,12 +870,12 @@ export default function AdminJobsPage() {
                   </select>
                 </div>
 
-                <div>
+                <div className="min-w-0">
                   <label className="block text-xs font-semibold text-primary mb-1">Subject Specialization</label>
                   <select
                     value={selectedSubject}
                     onChange={(e) => setSelectedSubject(e.target.value)}
-                    className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm text-primary focus:border-secondary focus:outline-none"
+                    className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm text-primary focus:border-secondary focus:outline-none truncate"
                   >
                     {subjects.map((s) => (
                       <option key={s} value={s}>{s}</option>
@@ -882,12 +883,12 @@ export default function AdminJobsPage() {
                   </select>
                 </div>
 
-                <div>
+                <div className="min-w-0">
                   <label className="block text-xs font-semibold text-primary mb-1">School Board</label>
                   <select
                     value={selectedBoard}
                     onChange={(e) => setSelectedBoard(e.target.value)}
-                    className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm text-primary focus:border-secondary focus:outline-none"
+                    className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm text-primary focus:border-secondary focus:outline-none truncate"
                   >
                     {boards.map((b) => (
                       <option key={b} value={b}>{b}</option>
@@ -897,7 +898,7 @@ export default function AdminJobsPage() {
               </div>
 
               {/* Qualifications & Mandatory Criteria */}
-              <div className="grid gap-3 sm:grid-cols-3">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 <Input
                   label="Required Academic Degree"
                   placeholder="e.g. M.Sc, M.Ed"
@@ -920,9 +921,9 @@ export default function AdminJobsPage() {
               </div>
 
               {/* Experience Range & Openings */}
-              <div className="grid gap-3 sm:grid-cols-4">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 <Input
-                  label="Min Experience (Yrs)"
+                  label="Min Exp (Yrs)"
                   type="number"
                   min="0"
                   value={String(minExp)}
@@ -930,26 +931,26 @@ export default function AdminJobsPage() {
                   required
                 />
                 <Input
-                  label="Max Experience (Yrs)"
+                  label="Max Exp (Yrs)"
                   type="number"
                   min="0"
                   value={String(maxExp)}
                   onChange={(e) => setMaxExp(Number(e.target.value))}
                 />
                 <Input
-                  label="Number of Vacancies"
+                  label="Vacancies"
                   type="number"
                   min="1"
                   value={String(vacanciesCount)}
                   onChange={(e) => setVacanciesCount(Number(e.target.value))}
                   required
                 />
-                <div>
+                <div className="min-w-0">
                   <label className="block text-xs font-semibold text-primary mb-1">Employment Type</label>
                   <select
                     value={employmentType}
                     onChange={(e) => setEmploymentType(e.target.value)}
-                    className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm text-primary focus:border-secondary focus:outline-none"
+                    className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm text-primary focus:border-secondary focus:outline-none truncate"
                   >
                     <option value="Full-time">Full-time</option>
                     <option value="Part-time">Part-time</option>
@@ -960,7 +961,7 @@ export default function AdminJobsPage() {
               </div>
 
               {/* Location Fields */}
-              <div className="grid gap-3 sm:grid-cols-4">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 <div>
                   <label className="block text-xs font-semibold text-primary mb-1">State *</label>
                   <input
@@ -970,12 +971,12 @@ export default function AdminJobsPage() {
                     className="w-full rounded-xl border border-border bg-[#F5F2EB] px-3 py-2 text-sm font-medium text-primary cursor-not-allowed"
                   />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <label className="block text-xs font-semibold text-primary mb-1">District *</label>
                   <select
                     value={district}
                     onChange={(e) => setDistrict(e.target.value)}
-                    className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm text-primary focus:border-secondary focus:outline-none"
+                    className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm text-primary focus:border-secondary focus:outline-none truncate"
                     required
                   >
                     <option value="">Select Active District</option>
@@ -1005,7 +1006,7 @@ export default function AdminJobsPage() {
               </div>
 
               {/* Remuneration & Deadline */}
-              <div className="grid gap-3 sm:grid-cols-4">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 <Input
                   label="Min Salary (INR)"
                   type="number"
@@ -1020,19 +1021,19 @@ export default function AdminJobsPage() {
                   value={String(salaryMax)}
                   onChange={(e) => setSalaryMax(Number(e.target.value))}
                 />
-                <div>
+                <div className="min-w-0">
                   <label className="block text-xs font-semibold text-primary mb-1">Salary Frequency</label>
                   <select
                     value={salaryPeriod}
                     onChange={(e) => setSalaryPeriod(e.target.value as "monthly" | "yearly")}
-                    className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm text-primary focus:border-secondary focus:outline-none"
+                    className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm text-primary focus:border-secondary focus:outline-none truncate"
                   >
                     <option value="monthly">Monthly (₹ / mo)</option>
                     <option value="yearly">Yearly (₹ / yr)</option>
                   </select>
                 </div>
                 <Input
-                  label="Application Deadline"
+                  label="Deadline"
                   type="date"
                   value={applicationDeadline}
                   onChange={(e) => setApplicationDeadline(e.target.value)}
@@ -1040,25 +1041,25 @@ export default function AdminJobsPage() {
               </div>
 
               {/* Interview Mode & Description */}
-              <div className="grid gap-3 sm:grid-cols-2">
-                <div>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div className="min-w-0">
                   <label className="block text-xs font-semibold text-primary mb-1">Interview Mode</label>
                   <select
                     value={interviewMode}
                     onChange={(e) => setInterviewMode(e.target.value)}
-                    className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm text-primary focus:border-secondary focus:outline-none"
+                    className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm text-primary focus:border-secondary focus:outline-none truncate"
                   >
                     <option value="Online">Online Video Evaluation</option>
                     <option value="In-person">In-Person Campus Demo</option>
                     <option value="Hybrid">Hybrid (Online + Demo)</option>
                   </select>
                 </div>
-                <div>
+                <div className="min-w-0">
                   <label className="block text-xs font-semibold text-primary mb-1">Publication Status</label>
                   <select
                     value={targetStatus}
                     onChange={(e) => setTargetStatus(e.target.value as "draft" | "published")}
-                    className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm text-primary focus:border-secondary focus:outline-none"
+                    className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm text-primary focus:border-secondary focus:outline-none truncate"
                   >
                     <option value="published">Publish Immediately (Public)</option>
                     <option value="draft">Save as Draft (Private)</option>
@@ -1074,7 +1075,7 @@ export default function AdminJobsPage() {
                 placeholder="Describe the department, classroom culture, and expectations..."
               />
 
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <Textarea
                   label="Key Responsibilities (1 item per line)"
                   rows={3}
