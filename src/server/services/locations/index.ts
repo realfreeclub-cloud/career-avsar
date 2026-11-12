@@ -211,48 +211,13 @@ export async function seedInitialLocations(): Promise<void> {
 }
 
 /**
- * Returns active service locations for public discovery, search panels and registration forms.
- */
-export async function getActiveLocations(): Promise<LocationDto[]> {
-  await connectToDatabase();
-  let docs = await LocationModel.find({ isActive: true }).sort({ displayOrder: 1, district: 1 }).lean<LocationDoc[]>();
-
-  // If collection is empty or missing initial 6 districts, trigger seed and refetch
-  if (!docs.length || docs.length < 6) {
-    await seedInitialLocations();
-    docs = await LocationModel.find({ isActive: true }).sort({ displayOrder: 1, district: 1 }).lean<LocationDoc[]>();
-  }
-
-  // Count active published jobs per district
-  const districtCounts = await JobModel.aggregate([
-    { $match: { status: "published", isPublic: true } },
-    { $group: { _id: { $toLower: "$location.district" }, count: { $sum: 1 } } },
-  ]);
-
-  const countMap = new Map<string, number>();
-  for (const item of districtCounts) {
-    if (item._id) countMap.set(String(item._id).toLowerCase(), Number(item.count));
-  }
-
-  return docs.map((doc) => {
-    // Check direct match or alias matches
-    let jobCount = countMap.get(doc.district.toLowerCase()) ?? 0;
-    if (doc.district.toLowerCase() === "prayagraj") {
-      jobCount += countMap.get("allahabad") ?? 0;
-    }
-    return toDto(doc, jobCount);
-  });
-}
-
-/**
  * Retrieves a single active location by slug with real job counts for SEO landing pages.
  * Handles alias slugs:
  * - "allahabad" -> resolves to "prayagraj"
  * - "rae-bareli" or "rai-bareli" -> resolves to "raebareli"
  */
 export async function getLocationBySlug(slug: string): Promise<LocationDto | null> {
-  await connectToDatabase();
-  let cleanSlug = slug.toLowerCase().trim();
+  let cleanSlug = (slug || "").toLowerCase().trim();
 
   // Alias slug resolution
   if (cleanSlug === "allahabad" || cleanSlug === "prayag") {
@@ -261,36 +226,124 @@ export async function getLocationBySlug(slug: string): Promise<LocationDto | nul
     cleanSlug = "raebareli";
   }
 
-  let doc = await LocationModel.findOne({
-    $or: [{ slug: cleanSlug }, { searchAliases: new RegExp(`^${cleanSlug}$`, "i") }],
-  }).lean<LocationDoc | null>();
+  try {
+    await connectToDatabase();
 
-  if (!doc) {
-    await seedInitialLocations();
-    doc = await LocationModel.findOne({
+    let doc = await LocationModel.findOne({
       $or: [{ slug: cleanSlug }, { searchAliases: new RegExp(`^${cleanSlug}$`, "i") }],
     }).lean<LocationDoc | null>();
+
+    if (!doc) {
+      await seedInitialLocations().catch(() => {});
+      doc = await LocationModel.findOne({
+        $or: [{ slug: cleanSlug }, { searchAliases: new RegExp(`^${cleanSlug}$`, "i") }],
+      }).lean<LocationDoc | null>();
+    }
+
+    if (!doc) {
+      const staticMatch = INITIAL_SERVICE_DISTRICTS.find(
+        (d) => d.slug === cleanSlug || d.searchAliases?.some((a) => a.toLowerCase() === cleanSlug)
+      );
+      if (staticMatch) {
+        return {
+          id: staticMatch.slug,
+          ...staticMatch,
+          activeJobsCount: 0,
+        };
+      }
+      return null;
+    }
+
+    // Build query matching canonical district or aliases
+    const districtMatchPatterns = [doc.district];
+    if (doc.district.toLowerCase() === "prayagraj") {
+      districtMatchPatterns.push("Allahabad");
+    } else if (doc.district.toLowerCase() === "raebareli") {
+      districtMatchPatterns.push("Rae Bareli", "Rai Bareli");
+    }
+
+    let count = 0;
+    try {
+      count = await JobModel.countDocuments({
+        status: "published",
+        isPublic: true,
+        "location.district": {
+          $in: districtMatchPatterns.map((d) => new RegExp(`^${escapeRegex(d)}$`, "i")),
+        },
+      });
+    } catch {
+      count = 0;
+    }
+
+    return toDto(doc, count);
+  } catch (err) {
+    console.error("[LOCATIONS ERROR] getLocationBySlug failed:", err);
+    const staticMatch = INITIAL_SERVICE_DISTRICTS.find(
+      (d) => d.slug === cleanSlug || d.searchAliases?.some((a) => a.toLowerCase() === cleanSlug)
+    );
+    if (staticMatch) {
+      return {
+        id: staticMatch.slug,
+        ...staticMatch,
+        activeJobsCount: 0,
+      };
+    }
+    return null;
   }
+}
 
-  if (!doc) return null;
+/**
+ * Returns active service locations for public discovery, search panels and registration forms.
+ */
+export async function getActiveLocations(): Promise<LocationDto[]> {
+  try {
+    await connectToDatabase();
+    let docs = await LocationModel.find({ isActive: true }).sort({ displayOrder: 1, district: 1 }).lean<LocationDoc[]>();
 
-  // Build query matching canonical district or aliases
-  const districtMatchPatterns = [doc.district];
-  if (doc.district.toLowerCase() === "prayagraj") {
-    districtMatchPatterns.push("Allahabad");
-  } else if (doc.district.toLowerCase() === "raebareli") {
-    districtMatchPatterns.push("Rae Bareli", "Rai Bareli");
+    // If collection is empty or missing initial 6 districts, trigger seed and refetch
+    if (!docs.length || docs.length < 6) {
+      await seedInitialLocations().catch(() => {});
+      docs = await LocationModel.find({ isActive: true }).sort({ displayOrder: 1, district: 1 }).lean<LocationDoc[]>();
+    }
+
+    if (!docs.length) {
+      return INITIAL_SERVICE_DISTRICTS.map((d) => ({
+        id: d.slug,
+        ...d,
+        activeJobsCount: 0,
+      }));
+    }
+
+    // Count active published jobs per district
+    try {
+      const districtCounts = await JobModel.aggregate([
+        { $match: { status: "published", isPublic: true } },
+        { $group: { _id: { $toLower: "$location.district" }, count: { $sum: 1 } } },
+      ]);
+
+      const countMap = new Map<string, number>();
+      for (const item of districtCounts) {
+        if (item._id) countMap.set(String(item._id).toLowerCase(), Number(item.count));
+      }
+
+      return docs.map((doc) => {
+        let jobCount = countMap.get(doc.district.toLowerCase()) ?? 0;
+        if (doc.district.toLowerCase() === "prayagraj") {
+          jobCount += countMap.get("allahabad") ?? 0;
+        }
+        return toDto(doc, jobCount);
+      });
+    } catch {
+      return docs.map((doc) => toDto(doc, 0));
+    }
+  } catch (err) {
+    console.error("[LOCATIONS ERROR] getActiveLocations failed:", err);
+    return INITIAL_SERVICE_DISTRICTS.map((d) => ({
+      id: d.slug,
+      ...d,
+      activeJobsCount: 0,
+    }));
   }
-
-  const count = await JobModel.countDocuments({
-    status: "published",
-    isPublic: true,
-    "location.district": {
-      $in: districtMatchPatterns.map((d) => new RegExp(`^${escapeRegex(d)}$`, "i")),
-    },
-  });
-
-  return toDto(doc, count);
 }
 
 /**

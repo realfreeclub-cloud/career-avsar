@@ -49,14 +49,137 @@ function verifyPassword(password, stored) {
   return crypto.timingSafeEqual(expected, derived);
 }
 
+const INITIAL_SERVICE_DISTRICTS = [
+  {
+    country: "India",
+    state: "Uttar Pradesh",
+    district: "Pratapgarh",
+    slug: "pratapgarh",
+    isActive: true,
+    isFeatured: true,
+    displayOrder: 1,
+    seoTitle: "Teaching Jobs in Pratapgarh, Uttar Pradesh | Career Avsar",
+    seoDescription:
+      "Explore verified teaching vacancies and faculty positions in Pratapgarh, Uttar Pradesh with Career Avsar. PGT, TGT, PRT openings across CBSE, ICSE, and UP State Board schools.",
+    headquarterCity: "Pratapgarh",
+    majorTowns: ["Bela Pratapgarh", "Kunda", "Patti", "Lalganj", "Raniganj"],
+    searchAliases: ["Bela Pratapgarh", "Partapgarh"],
+    description:
+      "Connecting qualified teachers with progressive CBSE, ICSE and state board schools across Pratapgarh, Kunda, and Patti.",
+    bannerImage: "/images/districts/pratapgarh.jpg",
+    landingPageVisible: true,
+  },
+  {
+    country: "India",
+    state: "Uttar Pradesh",
+    district: "Amethi",
+    slug: "amethi",
+    isActive: true,
+    isFeatured: true,
+    displayOrder: 2,
+    seoTitle: "Teaching Jobs in Amethi, Uttar Pradesh | Career Avsar",
+    seoDescription:
+      "Discover verified school teacher positions in Amethi, Uttar Pradesh. Career Avsar connects qualified educators directly with hiring schools in Gauriganj, Musafirkhana, and Tiloi.",
+    headquarterCity: "Gauriganj",
+    majorTowns: ["Gauriganj", "Amethi", "Musafirkhana", "Tiloi", "Jagdishpur"],
+    searchAliases: ["Chhatrapati Shahuji Maharaj Nagar"],
+    description:
+      "Discover trusted teaching vacancies across expanding educational institutions in Amethi, Gauriganj, and Jagdishpur.",
+    bannerImage: "/images/districts/amethi.jpg",
+    landingPageVisible: true,
+  },
+  {
+    country: "India",
+    state: "Uttar Pradesh",
+    district: "Jaunpur",
+    slug: "jaunpur",
+    isActive: true,
+    isFeatured: true,
+    displayOrder: 3,
+    seoTitle: "Teaching Jobs in Jaunpur, Uttar Pradesh | Career Avsar",
+    seoDescription:
+      "Find verified school teacher jobs in Jaunpur, Uttar Pradesh. Apply for PGT, TGT, PRT, and primary teacher vacancies with Career Avsar.",
+    headquarterCity: "Jaunpur",
+    majorTowns: ["Jaunpur City", "Shahganj", "Machhlishahr", "Badlapur", "Kerakat", "Mariahu"],
+    searchAliases: ["Shiraz-e-Hind", "Jaunpore"],
+    description:
+      "Join premier schools and inter colleges in Jaunpur, Shahganj, and Machhlishahr with transparent direct recruitment.",
+    bannerImage: "/images/districts/jaunpur.jpg",
+    landingPageVisible: true,
+  },
+  {
+    country: "India",
+    state: "Uttar Pradesh",
+    district: "Prayagraj",
+    slug: "prayagraj",
+    isActive: true,
+    isFeatured: true,
+    displayOrder: 4,
+    seoTitle: "Teaching Jobs in Prayagraj, Uttar Pradesh | Career Avsar",
+    seoDescription:
+      "Explore verified school teacher vacancies in Prayagraj (Allahabad) across CBSE, ICSE, UP Board and private institutions. Connect with top schools via Career Avsar.",
+    headquarterCity: "Prayagraj",
+    majorTowns: ["Civil Lines", "Naini", "Phulpur", "Jhunsi", "Koraon", "Soraon"],
+    searchAliases: ["Allahabad", "Prayag", "Ilhabad"],
+    description:
+      "Historic academic capital of Uttar Pradesh offering premier teaching opportunities across convent, CBSE, ICSE, and private academies.",
+    bannerImage: "/images/districts/prayagraj.jpg",
+    landingPageVisible: true,
+  },
+  {
+    country: "India",
+    state: "Uttar Pradesh",
+    district: "Raebareli",
+    slug: "raebareli",
+    isActive: true,
+    isFeatured: true,
+    displayOrder: 5,
+    seoTitle: "Teaching Jobs in Raebareli, Uttar Pradesh | Career Avsar",
+    seoDescription:
+      "Apply for verified school teaching jobs in Raebareli, Uttar Pradesh with Career Avsar. Openings for PGT, TGT, PRT, and foundational educators.",
+    headquarterCity: "Raebareli",
+    majorTowns: ["Raebareli City", "Lalganj", "Salon", "Dalmau", "Unchahar", "Bachhrawan"],
+    searchAliases: ["Rae Bareli", "Rai Bareli", "Raebarelly"],
+    description:
+      "Thriving educational corridor in central Uttar Pradesh connecting certified educators with reputed schools.",
+    bannerImage: "/images/districts/raebareli.jpg",
+    landingPageVisible: true,
+  },
+  {
+    country: "India",
+    state: "Uttar Pradesh",
+    district: "Sultanpur",
+    slug: "sultanpur",
+    isActive: true,
+    isFeatured: true,
+    displayOrder: 6,
+    seoTitle: "Teaching Jobs in Sultanpur, Uttar Pradesh | Career Avsar",
+    seoDescription:
+      "Discover verified teaching vacancies in Sultanpur, Uttar Pradesh. Browse openings across premier CBSE, ICSE, and UP State Board schools via Career Avsar.",
+    headquarterCity: "Sultanpur",
+    majorTowns: ["Sultanpur City", "Kadipur", "Lambhua", "Jaisinghpur", "Kurebhar"],
+    searchAliases: ["Sooltanpoor"],
+    description:
+      "Vital eastern UP education center recruiting B.Ed and CTET qualified teachers for middle, high, and secondary schools.",
+    bannerImage: "/images/districts/sultanpur.jpg",
+    landingPageVisible: true,
+  },
+];
+
 async function run() {
   console.log("==================================================");
   console.log("CAREER AVSAR: SEEDING / RESETTING DEMO ACCOUNTS");
-  console.log("Target Database:", MONGODB_URI.replace(/:([^@]+)@/, ":****@"));
+  console.log("Target URI:", MONGODB_URI.replace(/:([^@]+)@/, ":****@"));
   console.log("==================================================\n");
 
-  await mongoose.connect(MONGODB_URI);
+  const connectOpts = {};
+  if (process.env.MONGODB_DB_NAME) {
+    connectOpts.dbName = process.env.MONGODB_DB_NAME;
+  }
+
+  await mongoose.connect(MONGODB_URI, connectOpts);
   const db = mongoose.connection.db;
+  console.log(`[MONGODB] Connected to database: '${mongoose.connection.name}'\n`);
 
   const accounts = [
     {
@@ -139,6 +262,17 @@ async function run() {
     console.log(`✓ Account [${acc.role.toUpperCase()}]: ${acc.email} | Password: ${acc.pass} | Hash Valid: ${verified}`);
   }
 
+  // Seed Locations
+  console.log("\n[SEEDING 6 CANONICAL DISTRICTS]");
+  for (const dist of INITIAL_SERVICE_DISTRICTS) {
+    await db.collection("locations").updateOne(
+      { slug: dist.slug },
+      { $set: { ...dist, updatedAt: new Date() } },
+      { upsert: true }
+    );
+    console.log(`✓ Location [${dist.district}] verified.`);
+  }
+
   // Ensure login toggles are enabled
   await db.collection("systemsettings").updateOne(
     { key: "teacher_login" },
@@ -158,7 +292,7 @@ async function run() {
   console.log("\n✓ System settings: teacher_login=true, school_login=true, teacher_registration=true");
 
   await mongoose.disconnect();
-  console.log("\n>>> ALL DEMO ACCOUNTS RESET AND VERIFIED SUCCESSFULLY <<<\n");
+  console.log("\n>>> ALL DEMO ACCOUNTS AND DISTRICTS RESET & VERIFIED SUCCESSFULLY <<<\n");
 }
 
 run().catch((err) => {

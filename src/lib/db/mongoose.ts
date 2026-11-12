@@ -31,12 +31,15 @@ export async function connectToDatabase(): Promise<typeof mongoose> {
     cached.promise = mongoose
       .connect(env.MONGODB_URI, opts)
       .then((m) => {
-        logger.info({ db: env.MONGODB_DB_NAME || "atlas-default" }, "MongoDB Atlas connection established");
+        const activeDb = m.connection.name;
+        logger.info({ db: activeDb }, "MongoDB connection established");
+        console.log(`[MONGODB] Connected to database: '${activeDb}'`);
         return m;
       })
       .catch((err) => {
         cached.promise = null;
         logger.error({ err: err?.message || err }, "MongoDB Atlas connection failed");
+        console.error("[MONGODB ERROR] Connection failed:", err?.message || err);
         throw err;
       });
   }

@@ -183,14 +183,23 @@ export async function listPublicJobs(search: JobSearch = {}): Promise<PageResult
     sortObj = { salaryMaxInr: -1, publishedAt: -1 };
   }
 
-  const [items, total] = await Promise.all([
-    JobModel.find(filter)
-      .sort(sortObj)
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .lean<Job[]>(),
-    JobModel.countDocuments(filter),
-  ]);
+  let items: Job[] = [];
+  let total = 0;
+  try {
+    const [fetchedItems, fetchedTotal] = await Promise.all([
+      JobModel.find(filter)
+        .sort(sortObj)
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .lean<Job[]>(),
+      JobModel.countDocuments(filter),
+    ]);
+    items = fetchedItems;
+    total = fetchedTotal;
+  } catch (err) {
+    logger.warn({ err }, "Error querying public jobs from database");
+    return emptyPage(page, limit);
+  }
 
   return {
     items: items.map(toPublicJob),

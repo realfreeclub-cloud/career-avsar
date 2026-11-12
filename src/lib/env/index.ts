@@ -7,7 +7,7 @@ const envSchema = z.object({
   PORT: z.coerce.number().int().positive().default(3003),
   HOSTNAME: z.string().default("127.0.0.1"),
   MONGODB_URI: z.string().min(1).default("mongodb://localhost:27017/indian_teacher_recruitment"),
-  MONGODB_DB_NAME: z.string().optional().default("career_avsar"),
+  MONGODB_DB_NAME: z.string().optional(),
   AUTH_SECRET: z.string().min(16).default("dev-only-replace-with-long-random-secret"),
   AUTH_TRUST_HOST: z
     .string()

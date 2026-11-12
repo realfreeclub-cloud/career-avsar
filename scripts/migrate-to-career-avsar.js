@@ -40,7 +40,12 @@ async function runMigration() {
   console.log("Timestamp:", new Date().toISOString());
   console.log("================================================================================");
 
-  await mongoose.connect(MONGODB_URI);
+  const connectOpts = {};
+  if (process.env.MONGODB_DB_NAME) {
+    connectOpts.dbName = process.env.MONGODB_DB_NAME;
+  }
+  await mongoose.connect(MONGODB_URI, connectOpts);
+  console.log(`[MONGODB] Connected to database: '${mongoose.connection.name}'\n`);
   const db = mongoose.connection.db;
 
   // 1. Audit Current State Before Migration

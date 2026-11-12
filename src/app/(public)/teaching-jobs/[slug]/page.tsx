@@ -12,8 +12,8 @@ import {
 import { buildMetadata } from "@/lib/seo/metadata";
 import { Button } from "@/components/ui";
 import { JobCard } from "@/components/public/job-card";
-import { getLocationBySlug, getActiveLocations } from "@/server/services/locations";
-import { listPublicJobs } from "@/server/services/public";
+import { getLocationBySlug, getActiveLocations, type LocationDto } from "@/server/services/locations";
+import { listPublicJobs, type PublicJob } from "@/server/services/public";
 import { CAREER_AVSAR_BRAND } from "@/lib/brand/config";
 
 export const dynamic = "force-dynamic";
@@ -23,31 +23,40 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const resolvedParams = await Promise.resolve(params);
-  const rawSlug = resolvedParams.slug.toLowerCase().trim();
+  try {
+    const resolvedParams = await Promise.resolve(params);
+    const rawSlug = (resolvedParams?.slug || "").toLowerCase().trim();
 
-  // Alias redirection handling for Allahabad
-  if (rawSlug === "allahabad" || rawSlug === "prayag") {
+    // Alias redirection handling for Allahabad
+    if (rawSlug === "allahabad" || rawSlug === "prayag") {
+      return buildMetadata({
+        title: `Teaching Jobs in Prayagraj (Allahabad), Uttar Pradesh | ${CAREER_AVSAR_BRAND.brandName}`,
+        description: "Explore verified teaching vacancies in Prayagraj across premier schools.",
+        path: "/teaching-jobs-in-prayagraj",
+      });
+    }
+
+    const location = await getLocationBySlug(rawSlug);
+    if (!location) return { title: "Location Not Found | Career Avsar" };
+
+    const title =
+      location.seoTitle ||
+      `Teaching Jobs in ${location.district}, Uttar Pradesh | ${CAREER_AVSAR_BRAND.brandName}`;
+    const description =
+      location.seoDescription ||
+      `Explore verified school teaching vacancies in ${location.district}, Uttar Pradesh with ${CAREER_AVSAR_BRAND.brandName}. Connect with accredited schools for PGT, TGT, PRT, and primary teacher positions.`;
+
     return buildMetadata({
-      title: `Teaching Jobs in Prayagraj (Allahabad), Uttar Pradesh | ${CAREER_AVSAR_BRAND.brandName}`,
-      description: "Explore verified teaching vacancies in Prayagraj across premier schools.",
-      path: "/teaching-jobs-in-prayagraj",
+      title,
+      description,
+      path: `/teaching-jobs-in-${location.slug}`,
     });
+  } catch {
+    return {
+      title: "Teaching Jobs in Uttar Pradesh | Career Avsar",
+      description: "Discover verified school teaching vacancies with Career Avsar.",
+    };
   }
-
-  const location = await getLocationBySlug(rawSlug);
-  if (!location) return { title: "Location Not Found" };
-
-  const title = location.seoTitle || `Teaching Jobs in ${location.district}, Uttar Pradesh | ${CAREER_AVSAR_BRAND.brandName}`;
-  const description =
-    location.seoDescription ||
-    `Explore verified school teaching vacancies in ${location.district}, Uttar Pradesh with ${CAREER_AVSAR_BRAND.brandName}. Connect with accredited schools for PGT, TGT, PRT, and primary teacher positions.`;
-
-  return buildMetadata({
-    title,
-    description,
-    path: `/teaching-jobs-in-${location.slug}`,
-  });
 }
 
 const DISTRICT_INSIGHTS: Record<
@@ -114,51 +123,52 @@ const DISTRICT_INSIGHTS: Record<
     ],
     educationHubs: "Civil Lines Sultanpur, Kadipur, Lambhua, and Jaisinghpur",
   },
-  lucknow: {
-    intro:
-      "As the capital city of Uttar Pradesh, Lucknow hosts prominent school chains, heritage convent academies, and private schools.",
-    highlights: [
-      "Gomti Nagar, Aliganj, Hazratganj, and Indira Nagar school networks",
-      "Demand across PGT, TGT, PRT, Nursery, and STEM coaching wings",
-      "Advanced school facilities and professional educator positions",
-    ],
-    educationHubs: "Gomti Nagar, Aliganj, Hazratganj, and Indira Nagar",
-  },
-  barabanki: {
-    intro:
-      "Barabanki combines educational infrastructure growth with dedicated community schools across Nawabganj and Haidergarh.",
-    highlights: [
-      "Nawabganj, Haidergarh, and Fatehpur progressive school campuses",
-      "Balanced demand for primary foundational and secondary curriculum specialists",
-      "Proximity to state capital offering good educator connectivity",
-    ],
-    educationHubs: "Nawabganj, Fatehpur, Haidergarh, and Ramsanehi Ghat",
-  },
 };
 
 export default async function DistrictLandingPage({ params }: Props) {
   const resolvedParams = await Promise.resolve(params);
-  const rawSlug = resolvedParams.slug.toLowerCase().trim();
+  const rawSlug = (resolvedParams?.slug || "").toLowerCase().trim();
 
   // Alias redirection: Allahabad -> Prayagraj (HTTP 301)
   if (rawSlug === "allahabad" || rawSlug === "prayag") {
     redirect("/teaching-jobs-in-prayagraj");
   }
 
-  const location = await getLocationBySlug(rawSlug);
+  let location = null;
+  try {
+    location = await getLocationBySlug(rawSlug);
+  } catch (err) {
+    console.error("[DISTRICT PAGE ERROR] Location fetch failed:", err);
+  }
 
   if (!location) {
     notFound();
   }
 
-  // Fetch real published jobs for this district
-  const jobsResult = await listPublicJobs({
-    district: location.district,
+  // Fetch real published jobs for this district safely
+  let jobsResult: { items: PublicJob[]; total: number; page: number; limit: number; hasMore: boolean } = {
+    items: [],
+    total: 0,
+    page: 1,
     limit: 12,
-  });
+    hasMore: false,
+  };
+  try {
+    jobsResult = await listPublicJobs({
+      district: location.district,
+      limit: 12,
+    });
+  } catch (err) {
+    console.error("[DISTRICT PAGE ERROR] Jobs fetch failed:", err);
+  }
 
-  const allActiveLocations = await getActiveLocations();
-  const otherLocations = allActiveLocations.filter((l) => l.slug !== location.slug);
+  let otherLocations: LocationDto[] = [];
+  try {
+    const allActive = await getActiveLocations();
+    otherLocations = allActive.filter((l) => l.slug !== location.slug);
+  } catch (err) {
+    console.error("[DISTRICT PAGE ERROR] Other locations fetch failed:", err);
+  }
 
   const insights = DISTRICT_INSIGHTS[location.slug] || {
     intro: `Explore verified school teacher recruitment opportunities across ${location.district}, Uttar Pradesh with ${CAREER_AVSAR_BRAND.brandName}. Connect with accredited institutions hiring qualified PGT, TGT, PRT, and specialist faculty.`,
@@ -172,7 +182,6 @@ export default async function DistrictLandingPage({ params }: Props) {
 
   const appUrl = CAREER_AVSAR_BRAND.appUrl;
 
-  // Structured Data: Breadcrumb
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -198,7 +207,6 @@ export default async function DistrictLandingPage({ params }: Props) {
     ],
   };
 
-  // Structured Data: JobPosting Collection (ItemPage)
   const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
