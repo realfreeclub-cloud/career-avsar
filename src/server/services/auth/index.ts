@@ -52,8 +52,13 @@ export async function registerTeacher(input: RegisterInput, meta?: { userAgent?:
 
 export async function loginUser(input: LoginInput, meta?: { userAgent?: string; ip?: string }) {
   await connectToDatabase();
-  const email = input.email.toLowerCase();
-  const user = await UserModel.findOne({ email });
+  const email = input.email.trim().toLowerCase();
+  const user = await UserModel.findOne({
+    $or: [
+      { email },
+      { email: { $regex: new RegExp(`^${email.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`, "i") } },
+    ],
+  });
   if (!user || user.status !== "active" || !verifyPassword(input.password, user.passwordHash)) {
     return { ok: false as const, status: 401, code: "INVALID_CREDENTIALS", message: "Invalid email or password" };
   }

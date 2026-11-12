@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Input, Card, useToast } from "@/components/ui";
 import { apiFetch } from "@/lib/api/client";
-import { ArrowRight, ShieldCheck, KeyRound, Building2 } from "lucide-react";
+import { ArrowRight, ShieldCheck, Building2 } from "lucide-react";
 import { BrandLogo } from "@/components/brand/logo";
 
 export function LoginForm() {
@@ -40,16 +40,10 @@ export function LoginForm() {
     router.refresh();
   }
 
-  function fillDemoTeacher() {
-    setEmail("teacher@careeravsar.in");
-    setPassword("Teacher@123");
-    setError(null);
-  }
-
   return (
     <div className="mx-auto w-full max-w-md">
       <div className="mb-6 text-center flex flex-col items-center">
-        <BrandLogo size="lg" showTagline={true} />
+        <BrandLogo size="md" showTagline={false} />
         <h1 className="mt-4 font-serif text-2xl font-bold tracking-tight text-[#14264D] sm:text-3xl">
           Teacher Portal Login
         </h1>
@@ -58,27 +52,7 @@ export function LoginForm() {
         </p>
       </div>
 
-      <Card className="p-6 sm:p-8 border-slate-200">
-        {/* Demo Helper Banner */}
-        <div className="mb-5 rounded-xl border border-blue-200 bg-blue-50/60 p-3 text-xs">
-          <div className="flex items-center justify-between gap-2">
-            <span className="font-semibold text-[#14264D] flex items-center gap-1.5">
-              <KeyRound className="h-3.5 w-3.5 text-[#1266C5]" /> Demo Teacher Credentials
-            </span>
-            <button
-              type="button"
-              onClick={fillDemoTeacher}
-              className="text-[11px] font-semibold text-[#1266C5] hover:underline"
-            >
-              Auto-fill
-            </button>
-          </div>
-          <p className="mt-1 text-slate-600">
-            Email: <code className="font-mono text-[#14264D]">teacher@careeravsar.in</code> (or <code className="font-mono">teacher@eduniyukti.com</code>) • Password:{" "}
-            <code className="font-mono text-[#14264D]">Teacher@123</code>
-          </p>
-        </div>
-
+      <Card className="p-6 sm:p-8 border-slate-200 shadow-sm rounded-2xl">
         <form onSubmit={submit} className="space-y-4" noValidate>
           <Input
             label="Registered Email"

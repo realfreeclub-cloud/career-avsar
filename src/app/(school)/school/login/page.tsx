@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   ArrowRight,
-  KeyRound,
 } from "lucide-react";
 import { Button, Input, Card, useToast } from "@/components/ui";
 import { apiFetch } from "@/lib/api/client";
@@ -55,18 +54,12 @@ function SchoolLoginForm() {
     router.refresh();
   }
 
-  function fillDemoSchool() {
-    setEmail("school@careeravsar.in");
-    setPassword("School@123");
-    setError(null);
-  }
-
   return (
     <div className="min-h-screen bg-[#F6F8FC] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         {/* Header */}
         <div className="text-center flex flex-col items-center">
-          <BrandLogo size="lg" showTagline={true} />
+          <BrandLogo size="md" showTagline={false} />
           <h1 className="mt-4 font-serif text-3xl font-bold tracking-tight text-[#14264D]">
             School Recruitment Portal
           </h1>
@@ -79,26 +72,6 @@ function SchoolLoginForm() {
         </div>
 
         <Card className="mt-8 p-6 sm:p-8 bg-white border border-slate-200 shadow-sm rounded-2xl">
-          {/* Quick Demo Helper Box */}
-          <div className="mb-5 rounded-xl border border-blue-200 bg-blue-50/60 p-3.5 space-y-2 text-xs">
-            <div className="flex items-center justify-between">
-              <span className="font-semibold text-[#14264D] flex items-center gap-1.5">
-                <KeyRound className="h-4 w-4 text-[#1266C5]" /> Demo School Credentials
-              </span>
-              <button
-                type="button"
-                onClick={fillDemoSchool}
-                className="text-[11px] font-bold text-[#1266C5] hover:underline"
-              >
-                Auto-fill
-              </button>
-            </div>
-            <p className="text-slate-600 text-[11px] leading-relaxed">
-              Email: <code className="font-mono text-[#14264D]">school@careeravsar.in</code> • Password:{" "}
-              <code className="font-mono text-[#14264D]">School@123</code>
-            </p>
-          </div>
-
           <form onSubmit={submit} className="space-y-4" noValidate>
             <Input
               label="Institutional Email"

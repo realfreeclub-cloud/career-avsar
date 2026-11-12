@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   ArrowRight,
-  KeyRound,
   Building2,
   Users,
 } from "lucide-react";
@@ -57,24 +56,12 @@ function AdminLoginForm() {
     router.refresh();
   }
 
-  function fillDemoAdmin1() {
-    setEmail("admin@careeravsar.in");
-    setPassword("Admin@123");
-    setError(null);
-  }
-
-  function fillDemoAdmin2() {
-    setEmail("admin@eduniyukti.com");
-    setPassword("Admin@123");
-    setError(null);
-  }
-
   return (
     <div className="min-h-screen bg-[#F6F8FC] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         {/* Header Branding */}
         <div className="text-center flex flex-col items-center">
-          <BrandLogo size="lg" showTagline={true} />
+          <BrandLogo size="md" showTagline={false} />
           <h1 className="mt-4 font-serif text-3xl font-bold tracking-tight text-[#14264D]">
             {CAREER_AVSAR_BRAND.brandName} Admin
           </h1>
@@ -88,47 +75,6 @@ function AdminLoginForm() {
 
         {/* Card Surface */}
         <Card className="mt-8 p-6 sm:p-8 bg-white border border-slate-200 shadow-sm rounded-2xl">
-          {/* Quick Demo Helper Box */}
-          <div className="mb-6 rounded-xl border border-blue-200 bg-blue-50/60 p-3.5 space-y-2.5 text-xs">
-            <div className="flex items-center justify-between">
-              <span className="font-semibold text-[#14264D] flex items-center gap-1.5">
-                <KeyRound className="h-4 w-4 text-[#1266C5]" /> Demo Admin Credentials
-              </span>
-              <span className="text-[10px] uppercase font-bold text-[#1266C5] bg-blue-100 px-2 py-0.5 rounded">
-                Verified
-              </span>
-            </div>
-
-            <p className="text-slate-600 text-[11px] leading-relaxed">
-              Click either option below to auto-fill verified administrator credentials:
-            </p>
-
-            <div className="grid gap-2">
-              <button
-                type="button"
-                onClick={fillDemoAdmin1}
-                className="w-full text-left rounded-lg border border-slate-200 bg-white p-2.5 hover:border-[#1266C5] hover:bg-slate-50 transition flex items-center justify-between"
-              >
-                <div>
-                  <span className="font-semibold text-[#14264D] block">Primary Admin (Career Avsar)</span>
-                  <code className="text-[11px] text-muted">admin@careeravsar.in / Admin@123</code>
-                </div>
-                <span className="text-[11px] font-bold text-[#1266C5]">Fill</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={fillDemoAdmin2}
-                className="w-full text-left rounded-lg border border-slate-200 bg-white p-2.5 hover:border-[#1266C5] hover:bg-slate-50 transition flex items-center justify-between"
-              >
-                <div>
-                  <span className="font-semibold text-[#14264D] block">Legacy Admin (EduNiyukti Account)</span>
-                  <code className="text-[11px] text-muted">admin@eduniyukti.com / Admin@123</code>
-                </div>
-                <span className="text-[11px] font-bold text-[#1266C5]">Fill</span>
-              </button>
-            </div>
-          </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>

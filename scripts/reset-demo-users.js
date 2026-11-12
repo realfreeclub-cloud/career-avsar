@@ -30,6 +30,25 @@ function hashPassword(password) {
   return `scrypt:${salt}:${derived}`;
 }
 
+function verifyPassword(password, stored) {
+  if (!stored) return false;
+  const parts = stored.split(":");
+  let salt, hash;
+  if (parts.length === 3 && parts[0] === "scrypt") {
+    salt = parts[1];
+    hash = parts[2];
+  } else if (parts.length === 2) {
+    salt = parts[0];
+    hash = parts[1];
+  } else {
+    return false;
+  }
+  const derived = crypto.scryptSync(password, salt, 64);
+  const expected = Buffer.from(hash, "hex");
+  if (expected.length !== derived.length) return false;
+  return crypto.timingSafeEqual(expected, derived);
+}
+
 async function run() {
   console.log("==================================================");
   console.log("CAREER AVSAR: SEEDING / RESETTING DEMO ACCOUNTS");
@@ -116,7 +135,8 @@ async function run() {
       );
     }
 
-    console.log(`✓ Account [${acc.role.toUpperCase()}]: ${acc.email} | Password: ${acc.pass}`);
+    const verified = verifyPassword(acc.pass, passwordHash);
+    console.log(`✓ Account [${acc.role.toUpperCase()}]: ${acc.email} | Password: ${acc.pass} | Hash Valid: ${verified}`);
   }
 
   // Ensure login toggles are enabled
