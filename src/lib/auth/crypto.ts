@@ -10,8 +10,22 @@ export function hashPassword(password: string): string {
 }
 
 export function verifyPassword(password: string, stored: string): boolean {
-  const [algo, salt, hash] = stored.split(":");
-  if (algo !== "scrypt" || !salt || !hash) return false;
+  if (!stored) return false;
+  const parts = stored.split(":");
+  let salt: string;
+  let hash: string;
+
+  if (parts.length === 3 && parts[0] === "scrypt") {
+    salt = parts[1];
+    hash = parts[2];
+  } else if (parts.length === 2) {
+    // Backward compatibility for legacy salt:hash format
+    salt = parts[0];
+    hash = parts[1];
+  } else {
+    return false;
+  }
+
   const derived = crypto.scryptSync(password, salt, KEYLEN);
   const expected = Buffer.from(hash, "hex");
   if (expected.length !== derived.length) return false;

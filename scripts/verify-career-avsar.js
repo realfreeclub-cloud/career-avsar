@@ -1,5 +1,6 @@
 // scripts/verify-career-avsar.js
 const mongoose = require("mongoose");
+const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 
@@ -103,12 +104,40 @@ async function runVerification() {
     }
 
     // Check User Accounts
+    function localVerifyPassword(password, stored) {
+      if (!stored) return false;
+      const parts = stored.split(":");
+      let salt, hash;
+      if (parts.length === 3 && parts[0] === "scrypt") {
+        salt = parts[1];
+        hash = parts[2];
+      } else if (parts.length === 2) {
+        salt = parts[0];
+        hash = parts[1];
+      } else {
+        return false;
+      }
+      const derived = crypto.scryptSync(password, salt, 64);
+      const expected = Buffer.from(hash, "hex");
+      if (expected.length !== derived.length) return false;
+      return crypto.timingSafeEqual(expected, derived);
+    }
+
     const usersCount = await db.collection("users").countDocuments();
     const adminUser = await db.collection("users").findOne({ email: "admin@careeravsar.in" });
     const teacherUser = await db.collection("users").findOne({ email: "teacher@careeravsar.in" });
     const schoolUser = await db.collection("users").findOne({ email: "school@careeravsar.in" });
 
     if (adminUser && teacherUser && schoolUser) {
+      const adminOk = localVerifyPassword("Admin@123", adminUser.passwordHash);
+      const teacherOk = localVerifyPassword("Teacher@123", teacherUser.passwordHash);
+      const schoolOk = localVerifyPassword("School@123", schoolUser.passwordHash);
+
+      if (adminOk && teacherOk && schoolOk) {
+        checks.push(`[PASS] Seeded Career Avsar passwords authenticated successfully for Admin, Teacher, and School!`);
+      } else {
+        errors.push(`[FAIL] Password authentication failed: Admin=${adminOk}, Teacher=${teacherOk}, School=${schoolOk}`);
+      }
       checks.push(`[PASS] Seeded Career Avsar accounts verified (Admin, Teacher, School) across ${usersCount} total users.`);
     } else {
       errors.push(`[FAIL] Missing seeded user accounts in MongoDB users collection.`);

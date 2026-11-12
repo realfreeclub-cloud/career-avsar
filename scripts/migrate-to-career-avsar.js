@@ -31,7 +31,7 @@ const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/indian
 function hashPassword(password) {
   const salt = crypto.randomBytes(16).toString("hex");
   const derived = crypto.scryptSync(password, salt, 64).toString("hex");
-  return `${salt}:${derived}`;
+  return `scrypt:${salt}:${derived}`;
 }
 
 async function runMigration() {

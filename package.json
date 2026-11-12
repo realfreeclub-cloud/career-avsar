@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start -p 3003 -H 127.0.0.1",
     "seed:atlas": "node scripts/migrate-to-career-avsar.js",
+    "seed:users": "node scripts/reset-demo-users.js",
     "seed:regional": "node scripts/seed-regional-data.ts",
     "lint": "next lint",
     "typecheck": "tsc --noEmit"
