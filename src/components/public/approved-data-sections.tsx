@@ -42,7 +42,7 @@ export function FeaturedInstitutionsSection() {
             Verified Academic Partners
           </p>
           <h2 id="institutions-heading" className="mt-1 font-serif text-2xl font-bold tracking-tight text-primary sm:text-3xl">
-            Approved Institutions &amp; Schools
+            Approved Institutions & Schools
           </h2>
           <p className="mt-2 text-sm text-muted sm:text-base leading-relaxed">
             Leading schools, junior colleges, and international academies hiring verified teachers through the national platform.
@@ -144,7 +144,7 @@ export function TestimonialsSection() {
             Real Stories, Real Placements
           </p>
           <h2 id="testimonials-heading" className="mt-1 font-serif text-2xl font-bold tracking-tight text-primary sm:text-3xl">
-            Voices of Teachers &amp; Academic Heads
+            Voices of Teachers & Academic Heads
           </h2>
           <p className="mt-2 text-sm text-muted sm:text-base leading-relaxed">
             Authentic experiences from educators who advanced their teaching careers and institutions that found verified talent.

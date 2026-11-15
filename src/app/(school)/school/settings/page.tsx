@@ -31,7 +31,7 @@ export default function SchoolSettingsPage() {
   return (
     <div className="space-y-6 max-w-2xl">
       <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs">
-        <h1 className="font-serif text-2xl font-bold text-[#14264D]">Account &amp; Security Settings</h1>
+        <h1 className="font-serif text-2xl font-bold text-[#14264D]">Account & Security Settings</h1>
         <p className="mt-1 text-xs text-[#687487]">
           Manage your login credentials and candidate alert preferences.
         </p>

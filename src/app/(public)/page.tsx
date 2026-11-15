@@ -145,24 +145,24 @@ export default async function HomePage() {
               </p>
 
               {/* Hero Action Buttons */}
-              <div className="mt-7 flex flex-col gap-3.5 sm:flex-row sm:items-center">
+              <div className="mt-7 flex flex-col gap-3 md:flex-row md:items-center">
                 <Button
                   asChildLink
                   href="/teacher/register"
                   size="lg"
-                  className="bg-[#1266C5] font-semibold text-white shadow-md hover:bg-[#087FE8]"
+                  className="w-full md:w-auto justify-center bg-[#1266C5] font-semibold text-white shadow-md hover:bg-[#087FE8] whitespace-normal text-center py-3 px-5"
                 >
-                  <span>Create Your Profile &amp; Explore Opportunities</span>
-                  <ArrowRight aria-hidden className="size-4 text-[#F28B19]" />
+                  <span>Create Your Profile & Explore Opportunities</span>
+                  <ArrowRight aria-hidden className="size-4 shrink-0 text-[#F28B19]" />
                 </Button>
                 <Button
                   asChildLink
                   href="/for-schools"
                   variant="outline"
                   size="lg"
-                  className="border-slate-300 bg-white font-semibold text-[#14264D] hover:bg-slate-50"
+                  className="w-full md:w-auto justify-center border-slate-300 bg-white font-semibold text-[#14264D] hover:bg-slate-50 whitespace-normal text-center py-3 px-5"
                 >
-                  <Building2 className="mr-1.5 size-4 text-[#1266C5]" />
+                  <Building2 className="mr-1.5 size-4 shrink-0 text-[#1266C5]" />
                   <span>Post Your Requirement</span>
                 </Button>
               </div>
@@ -316,7 +316,7 @@ export default async function HomePage() {
             <div className="lg:col-span-5">
               <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white px-3.5 py-1 text-xs font-semibold text-[#1266C5]">
                 <Building2 className="size-3.5 text-[#F28B19]" />
-                <span>For Schools &amp; Educational Institutions</span>
+                <span>For Schools & Educational Institutions</span>
               </div>
               <h2 className="mt-3 font-serif text-3xl font-bold tracking-tight text-[#14264D] sm:text-4xl">
                 Hire Qualified Teachers with Confidence
@@ -365,7 +365,7 @@ export default async function HomePage() {
         <div className="text-center max-w-2xl mx-auto">
           <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3.5 py-1 text-xs font-semibold text-[#1266C5]">
             <GraduationCap className="size-3.5" />
-            <span>For Teachers &amp; Educators</span>
+            <span>For Teachers & Educators</span>
           </div>
           <h2 className="mt-3 font-serif text-3xl font-bold tracking-tight text-[#14264D] sm:text-4xl">
             How Teachers Discover Career Opportunities
@@ -402,8 +402,8 @@ export default async function HomePage() {
         </div>
 
         <div className="mt-10 text-center">
-          <Button asChildLink href="/teacher/register" size="lg" className="bg-[#1266C5] font-semibold text-white hover:bg-[#087FE8]">
-            <span>Create Your Profile &amp; Explore Opportunities</span>
+          <Button asChildLink href="/teacher/register" size="lg" className="w-full sm:w-auto bg-[#1266C5] font-semibold text-white hover:bg-[#087FE8] whitespace-normal py-3 px-6">
+            <span>Create Your Profile & Explore Opportunities</span>
             <ArrowRight className="size-4 text-[#F28B19]" />
           </Button>
         </div>
@@ -416,7 +416,7 @@ export default async function HomePage() {
         <div className="container-safe">
           <div className="text-center max-w-xl mx-auto mb-8">
             <h2 className="font-serif text-2xl font-bold tracking-tight text-[#14264D]">
-              Explore Vacancies by Role &amp; Subject
+              Explore Vacancies by Role & Subject
             </h2>
             <p className="mt-1 text-xs text-[#687487]">
               Openings categorized across Senior Secondary, Secondary, Primary, and Foundational wings.

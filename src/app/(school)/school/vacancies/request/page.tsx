@@ -125,7 +125,7 @@ export default function VacancyRequestPage() {
             </div>
 
             <div className="sm:col-span-2">
-              <label className="block text-xs font-semibold text-[#14264D] mb-1.5">Job Responsibilities &amp; Preferences</label>
+              <label className="block text-xs font-semibold text-[#14264D] mb-1.5">Job Responsibilities & Preferences</label>
               <textarea
                 rows={4}
                 value={description}

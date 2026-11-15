@@ -77,7 +77,7 @@ export default function SchoolFeedbackPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-[#14264D] mb-1">Detailed Committee Feedback &amp; Observations</label>
+            <label className="block text-xs font-semibold text-[#14264D] mb-1">Detailed Committee Feedback & Observations</label>
             <textarea
               rows={4}
               value={comments}

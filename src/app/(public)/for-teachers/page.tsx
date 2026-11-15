@@ -71,12 +71,12 @@ export default function ForTeachersPage() {
             We connect qualified teachers with accredited CBSE, ICSE, and state board institutions across Uttar Pradesh. Build your professional profile once, and let vetted schools discover your teaching excellence.
           </p>
 
-          <div className="mt-7 flex flex-wrap gap-3.5">
-            <Button asChildLink href="/teacher/register" size="lg" className="bg-[#1266C5] font-semibold text-white hover:bg-[#087FE8]">
-              <span>Create Your Profile &amp; Explore Opportunities</span>
-              <ArrowRight className="size-4 text-[#F28B19]" />
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Button asChildLink href="/teacher/register" size="lg" className="w-full sm:w-auto justify-center bg-[#1266C5] font-semibold text-white hover:bg-[#087FE8] whitespace-normal text-center py-3 px-5">
+              <span>Create Your Profile & Explore Opportunities</span>
+              <ArrowRight className="size-4 shrink-0 text-[#F28B19]" />
             </Button>
-            <Button asChildLink href="/teacher/login" variant="outline" size="lg" className="border-slate-300 bg-white font-semibold text-[#14264D] hover:bg-slate-50">
+            <Button asChildLink href="/teacher/login" variant="outline" size="lg" className="w-full sm:w-auto justify-center border-slate-300 bg-white font-semibold text-[#14264D] hover:bg-slate-50 py-3 px-5">
               <span>Teacher Login</span>
             </Button>
           </div>

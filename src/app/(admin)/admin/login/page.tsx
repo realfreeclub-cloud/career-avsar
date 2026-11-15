@@ -69,7 +69,7 @@ function AdminLoginForm() {
             {CAREER_AVSAR_BRAND.brandDescriptor}
           </p>
           <p className="mt-2 text-sm text-[#687487]">
-            Operations Console for Schools, Teachers &amp; Placement Workflows
+            Operations Console for Schools, Teachers & Placement Workflows
           </p>
         </div>
 

@@ -1,4 +1,7 @@
+"use client";
+
 import * as React from "react";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { Button } from "@/components/ui/button";
@@ -25,6 +28,11 @@ const sizeClasses: Record<NonNullable<ModalProps["size"]>, string> = {
 
 export function Modal({ open, onClose, title, description, children, className, size = "lg" }: ModalProps) {
   const titleId = React.useId();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   React.useEffect(() => {
     if (!open) return;
@@ -40,11 +48,11 @@ export function Modal({ open, onClose, title, description, children, className, 
     };
   }, [open, onClose]);
 
-  if (!open) return null;
+  if (!mounted || !open) return null;
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-4"
+      className="fixed inset-0 z-[100] flex items-end justify-center p-0 sm:items-center sm:p-4"
       role="presentation"
     >
       <button
@@ -76,6 +84,7 @@ export function Modal({ open, onClose, title, description, children, className, 
         </div>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

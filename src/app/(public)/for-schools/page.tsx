@@ -58,13 +58,13 @@ export default function ForSchoolsPage() {
             Career Avsar partners with accredited educational institutions across Pratapgarh, Amethi, Jaunpur, Prayagraj, Raebareli, and Sultanpur to fulfill faculty requirements efficiently and reliably.
           </p>
 
-          <div className="mt-7 flex flex-wrap gap-3.5">
-            <Button asChildLink href="/contact?subject=School+Requirement" size="lg" className="bg-[#1266C5] font-semibold text-white hover:bg-[#087FE8]">
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Button asChildLink href="/contact?subject=School+Requirement" size="lg" className="w-full sm:w-auto justify-center bg-[#1266C5] font-semibold text-white hover:bg-[#087FE8] py-3 px-5">
               <span>Post Your Requirement</span>
-              <ArrowRight className="size-4 text-[#F28B19]" />
+              <ArrowRight className="size-4 shrink-0 text-[#F28B19]" />
             </Button>
-            <Button asChildLink href="/school/login" variant="outline" size="lg" className="border-slate-300 bg-white font-semibold text-[#14264D] hover:bg-slate-50">
-              <Building2 className="mr-1.5 size-4 text-[#1266C5]" />
+            <Button asChildLink href="/school/login" variant="outline" size="lg" className="w-full sm:w-auto justify-center border-slate-300 bg-white font-semibold text-[#14264D] hover:bg-slate-50 py-3 px-5">
+              <Building2 className="mr-1.5 size-4 shrink-0 text-[#1266C5]" />
               <span>School Portal Login</span>
             </Button>
           </div>
@@ -111,17 +111,17 @@ export default function ForSchoolsPage() {
             </div>
             <div className="rounded-xl border border-slate-100 bg-[#F6F8FC] p-4">
               <span className="font-serif text-xs font-bold text-[#F28B19]">02</span>
-              <h4 className="mt-2 font-serif text-sm font-bold text-[#14264D]">Candidate Sourcing &amp; Screening</h4>
+              <h4 className="mt-2 font-serif text-sm font-bold text-[#14264D]">Candidate Sourcing & Screening</h4>
               <p className="mt-1 text-xs text-[#687487]">We filter verified candidates from our regional educator pool and verify qualifications and track records.</p>
             </div>
             <div className="rounded-xl border border-slate-100 bg-[#F6F8FC] p-4">
               <span className="font-serif text-xs font-bold text-[#F28B19]">03</span>
-              <h4 className="mt-2 font-serif text-sm font-bold text-[#14264D]">Dossier Sharing &amp; Demos</h4>
+              <h4 className="mt-2 font-serif text-sm font-bold text-[#14264D]">Dossier Sharing & Demos</h4>
               <p className="mt-1 text-xs text-[#687487]">Shortlisted educator dossiers are shared for your committee&apos;s review, followed by scheduled demonstration lectures.</p>
             </div>
             <div className="rounded-xl border border-slate-100 bg-[#F6F8FC] p-4">
               <span className="font-serif text-xs font-bold text-[#F28B19]">04</span>
-              <h4 className="mt-2 font-serif text-sm font-bold text-[#14264D]">Appointment &amp; Joining</h4>
+              <h4 className="mt-2 font-serif text-sm font-bold text-[#14264D]">Appointment & Joining</h4>
               <p className="mt-1 text-xs text-[#687487]">Finalize selection terms and complete faculty onboarding with transparent joining documentation.</p>
             </div>
           </div>

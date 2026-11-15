@@ -331,7 +331,7 @@ export function TeacherProfileClient() {
     <div className="space-y-6">
       <header className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between border-b border-border pb-4">
         <div>
-          <h1 className="font-serif text-2xl font-bold text-primary sm:text-3xl">Teacher Dossier &amp; Profile</h1>
+          <h1 className="font-serif text-2xl font-bold text-primary sm:text-3xl">Teacher Dossier & Profile</h1>
           <p className="mt-1 text-sm text-muted">Review, update, and manage your verified credentials and uploaded documentation.</p>
         </div>
         <div className="flex flex-wrap gap-2.5">

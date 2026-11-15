@@ -283,24 +283,24 @@ export default async function DistrictLandingPage({ params }: Props) {
               </div>
 
               {/* CTAs */}
-              <div className="mt-8 flex flex-wrap items-center gap-3.5">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <Button
                   asChildLink
                   href="/teacher/register"
                   size="lg"
-                  className="bg-[#1266C5] font-medium text-white shadow-md hover:bg-[#087FE8]"
+                  className="w-full sm:w-auto justify-center bg-[#1266C5] font-medium text-white shadow-md hover:bg-[#087FE8] whitespace-normal text-center py-3 px-5"
                 >
-                  <span>Register &amp; Apply in {location.district}</span>
-                  <ArrowRight className="size-4 text-[#F28B19]" />
+                  <span>Register & Apply in {location.district}</span>
+                  <ArrowRight className="size-4 shrink-0 text-[#F28B19]" />
                 </Button>
                 <Button
                   asChildLink
                   href="#vacancies"
                   variant="outline"
                   size="lg"
-                  className="border-slate-300 bg-white font-medium text-[#14264D] hover:bg-slate-50"
+                  className="w-full sm:w-auto justify-center border-slate-300 bg-white font-medium text-[#14264D] hover:bg-slate-50 whitespace-normal text-center py-3 px-5"
                 >
-                  <Briefcase className="size-4 text-[#1266C5]" />
+                  <Briefcase className="size-4 shrink-0 text-[#1266C5]" />
                   <span>View All Openings ({jobsResult.total})</span>
                 </Button>
               </div>

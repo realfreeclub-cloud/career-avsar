@@ -1,4 +1,7 @@
+"use client";
+
 import * as React from "react";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { Button } from "@/components/ui/button";
@@ -14,6 +17,11 @@ export type DrawerProps = {
 
 export function Drawer({ open, onClose, title, children, side = "left", className }: DrawerProps) {
   const titleId = React.useId();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   React.useEffect(() => {
     if (!open) return;
@@ -29,42 +37,58 @@ export function Drawer({ open, onClose, title, children, side = "left", classNam
     };
   }, [open, onClose]);
 
-  return (
+  if (!mounted) return null;
+
+  const content = (
     <div
-      className={cn("fixed inset-0 z-50 lg:hidden", open ? "pointer-events-auto" : "pointer-events-none")}
+      className={cn(
+        "fixed inset-0 z-[100] lg:hidden transition-all duration-300",
+        open ? "pointer-events-auto visible" : "pointer-events-none invisible",
+      )}
       aria-hidden={!open}
     >
+      {/* Dark backdrop overlay over full screen */}
       <button
         type="button"
         aria-label="Close navigation"
         tabIndex={open ? 0 : -1}
         className={cn(
-          "absolute inset-0 bg-primary/25 backdrop-blur-[3px] transition-opacity duration-200",
+          "absolute inset-0 bg-[#14264D]/60 backdrop-blur-xs transition-opacity duration-300 ease-out",
           open ? "opacity-100" : "opacity-0",
         )}
         onClick={onClose}
       />
+
+      {/* Drawer slide-in panel */}
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
         className={cn(
-          "absolute top-0 flex h-full w-[min(22rem,92vw)] max-w-full flex-col bg-white p-5 shadow-2xl transition-transform duration-250 ease-out",
-          side === "left" ? "left-0 border-r border-border" : "right-0 border-l border-border",
+          "absolute top-0 flex h-full max-h-screen w-[min(22rem,88vw)] max-w-full flex-col bg-white p-5 shadow-2xl transition-transform duration-300 ease-out",
+          side === "left" ? "left-0 border-r border-slate-200" : "right-0 border-l border-slate-200",
           open ? "translate-x-0" : side === "left" ? "-translate-x-full" : "translate-x-full",
           className,
         )}
       >
-        <div className="mb-4 flex items-center justify-between border-b border-border/60 pb-3">
-          <h2 id={titleId} className="font-serif text-lg font-semibold text-primary">
+        <div className="mb-4 flex items-center justify-between border-b border-slate-100 pb-3">
+          <h2 id={titleId} className="font-serif text-lg font-bold text-[#14264D]">
             {title}
           </h2>
-          <Button variant="ghost" size="icon" aria-label="Close" onClick={onClose} className="text-primary hover:bg-soft-blue">
-            <X aria-hidden />
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Close navigation"
+            onClick={onClose}
+            className="size-9 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+          >
+            <X className="size-5" aria-hidden />
           </Button>
         </div>
-        <div className="min-h-0 flex-1 overflow-y-auto">{children}</div>
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pr-1">{children}</div>
       </div>
     </div>
   );
+
+  return createPortal(content, document.body);
 }

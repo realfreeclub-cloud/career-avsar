@@ -47,7 +47,7 @@ export default function SchoolInterviewsPage() {
   return (
     <div className="space-y-6">
       <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs">
-        <h1 className="font-serif text-2xl font-bold text-[#14264D]">Interview &amp; Demonstration Management</h1>
+        <h1 className="font-serif text-2xl font-bold text-[#14264D]">Interview & Demonstration Management</h1>
         <p className="mt-1 text-xs text-[#687487]">
           Coordinate demonstration lectures, suggest preferred interview slots, and review upcoming educator evaluations.
         </p>
@@ -139,7 +139,7 @@ export default function SchoolInterviewsPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#14264D] mb-1">Demonstration Topic &amp; Instructions</label>
+                <label className="block text-xs font-semibold text-[#14264D] mb-1">Demonstration Topic & Instructions</label>
                 <textarea
                   rows={3}
                   value={instructions}

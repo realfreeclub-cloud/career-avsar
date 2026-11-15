@@ -67,7 +67,7 @@ function SchoolLoginForm() {
             {CAREER_AVSAR_BRAND.tagline}
           </p>
           <p className="mt-2 text-xs text-[#687487]">
-            Authorized Institutional Access for Principals, HR &amp; Hiring Committees
+            Authorized Institutional Access for Principals, HR & Hiring Committees
           </p>
         </div>
 

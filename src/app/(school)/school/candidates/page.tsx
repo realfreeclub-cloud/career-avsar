@@ -127,7 +127,7 @@ export default function SchoolCandidatesPage() {
 
             <div className="mt-4 space-y-3 text-xs text-[#172334]">
               <div>
-                <span className="font-semibold text-muted block">Academic Degrees &amp; Certifications</span>
+                <span className="font-semibold text-muted block">Academic Degrees & Certifications</span>
                 <p className="mt-0.5">{selectedCandidate.qualifications}</p>
               </div>
               <div>
@@ -135,7 +135,7 @@ export default function SchoolCandidatesPage() {
                 <p className="mt-0.5">{selectedCandidate.experience}</p>
               </div>
               <div>
-                <span className="font-semibold text-muted block">Preferred District &amp; Commute</span>
+                <span className="font-semibold text-muted block">Preferred District & Commute</span>
                 <p className="mt-0.5">{selectedCandidate.district}, Uttar Pradesh</p>
               </div>
               <div>

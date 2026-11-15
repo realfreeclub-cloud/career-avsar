@@ -34,7 +34,7 @@ export default function PrivacyPage() {
         </section>
 
         <section aria-labelledby="p3">
-          <h2 id="p3" className="font-serif text-lg font-bold text-primary">3. Data Confidentiality &amp; Access Controls</h2>
+          <h2 id="p3" className="font-serif text-lg font-bold text-primary">3. Data Confidentiality & Access Controls</h2>
           <p className="mt-1.5">
             Teacher resumes and private credentials are never sold to third-party advertisers. Dossiers are shared exclusively with institutions that the teacher has actively applied to or authorized to review their profile.
           </p>

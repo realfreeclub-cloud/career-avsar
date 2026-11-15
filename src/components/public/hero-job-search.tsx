@@ -71,7 +71,7 @@ export function HeroJobSearch() {
             Find Regional Teaching Opportunities
           </h2>
           <p className="text-xs text-muted">
-            Search verified positions across CBSE, ICSE, UP Board &amp; private institutions in Uttar Pradesh
+            Search verified positions across CBSE, ICSE, UP Board & private institutions in Uttar Pradesh
           </p>
         </div>
         <span className="hidden items-center gap-1 rounded-full bg-soft-blue px-2.5 py-1 text-xs font-semibold text-secondary sm:inline-flex border border-[#D5DFEB]">

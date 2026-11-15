@@ -135,7 +135,7 @@ export function SiteHeader() {
                   </div>
                   <div>
                     <span className="block text-xs font-bold text-[#14264D] group-hover:text-[#1266C5]">Teacher Portal</span>
-                    <span className="block text-[11px] text-muted">Applications, interviews &amp; profile</span>
+                    <span className="block text-[11px] text-muted">Applications, interviews & profile</span>
                   </div>
                 </Link>
 
@@ -149,7 +149,7 @@ export function SiteHeader() {
                   </div>
                   <div>
                     <span className="block text-xs font-bold text-[#14264D] group-hover:text-[#F28B19]">School Portal</span>
-                    <span className="block text-[11px] text-muted">Institutional hiring &amp; requirements</span>
+                    <span className="block text-[11px] text-muted">Institutional hiring & requirements</span>
                   </div>
                 </Link>
 

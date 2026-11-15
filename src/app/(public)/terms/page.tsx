@@ -13,7 +13,7 @@ export default function TermsPage() {
       <header className="max-w-3xl">
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent-gold">Platform Agreement</p>
         <h1 className="mt-2 font-serif text-3xl font-bold tracking-tight text-primary sm:text-4xl">
-          Terms &amp; Conditions
+          Terms & Conditions
         </h1>
         <p className="mt-2 text-sm text-muted">Effective as of: November 2026</p>
       </header>
