@@ -1,8 +1,11 @@
 import "server-only";
 import { z } from "zod";
 
-const optStr = (max: number) => z.string().trim().max(max).optional().or(z.literal(""));
+const optStr = (max: number) => z.string().trim().max(max).optional().or(z.literal("")).nullable();
 const strArr = z.array(z.string().trim().max(120)).max(50).optional().default([]);
+const draftStr = (max = 500) => z.string().trim().max(max).optional().or(z.literal("")).nullable();
+const draftBool = z.boolean().optional().nullable().default(false);
+const draftNum = z.union([z.coerce.number().min(0).max(100000000), z.literal(""), z.null(), z.undefined()]);
 
 export const personalSchema = z.object({
   fullName: z.string().trim().min(2, "Full name is required").max(120),
@@ -62,28 +65,67 @@ export const preferencesSchema = z.object({
 
 export const draftSchema = z.object({
   step: z.coerce.number().int().min(1).max(6).optional(),
-  personal: personalSchema.partial().optional(),
-  location: locationSchema.partial().optional(),
-  education: educationSchema.partial().optional(),
+  personal: z
+    .object({
+      fullName: draftStr(120),
+      email: z.string().trim().max(200).optional().or(z.literal("")).nullable(),
+      mobile: draftStr(30),
+      whatsapp: draftStr(30),
+      dob: draftStr(30),
+      gender: draftStr(50),
+      photoUrl: draftStr(500),
+    })
+    .partial()
+    .optional(),
+  location: z
+    .object({
+      state: draftStr(120),
+      district: draftStr(120),
+      city: draftStr(120),
+      currentAddress: draftStr(500),
+      preferredJobDistricts: strArr,
+      preferredJobLocations: strArr,
+      serviceAreaStatus: z.enum(["in_service_area", "outside_service_area", "review_needed", ""]).optional().nullable(),
+    })
+    .partial()
+    .optional(),
+  education: z
+    .object({
+      highestQualification: draftStr(120),
+      graduation: draftStr(200),
+      postGraduation: draftStr(200),
+      bed: draftBool,
+      deled: draftBool,
+      btc: draftBool,
+      ctet: draftBool,
+      ctetPaperI: draftBool,
+      ctetPaperII: draftBool,
+      uptet: draftBool,
+      otherTet: draftStr(200),
+    })
+    .partial()
+    .optional(),
   experience: z
     .object({
-      status: z.enum(["fresher", "experienced", ""]).optional(),
-      totalYears: z.coerce.number().min(0).max(60).optional(),
-      previousSchool: optStr(200),
-      previousDesignation: optStr(120),
-      currentEmploymentStatus: optStr(120),
-      expectedSalaryInr: z.coerce.number().min(0).max(100000000).optional(),
+      status: z.enum(["fresher", "experienced", ""]).optional().nullable(),
+      totalYears: draftNum,
+      previousSchool: draftStr(200),
+      previousDesignation: draftStr(120),
+      currentEmploymentStatus: draftStr(120),
+      expectedSalaryInr: draftNum,
     })
+    .partial()
     .optional(),
   preferences: z
     .object({
       categories: strArr,
-      subjects: z.array(z.string().trim().max(120)).max(50).optional(),
+      subjects: z.array(z.string().trim().max(120)).max(50).optional().default([]),
       preferredClasses: strArr,
-      preferredBoard: optStr(120),
-      employmentType: optStr(80),
+      preferredBoard: draftStr(120),
+      employmentType: draftStr(80),
       preferredLocations: strArr,
     })
+    .partial()
     .optional(),
 });
 

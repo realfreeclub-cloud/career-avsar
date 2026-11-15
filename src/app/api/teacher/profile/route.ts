@@ -24,19 +24,33 @@ export async function PUT(req: Request) {
     const mode = body?.mode;
     if (mode === "draft") {
       const parsed = draftSchema.safeParse(body?.data ?? body);
-      if (!parsed.success) return fail("VALIDATION_ERROR", "Invalid draft data", 400, parsed.error.flatten());
+      if (!parsed.success) {
+        const firstErr = parsed.error.issues[0]?.message || "Invalid draft data";
+        return fail("VALIDATION_ERROR", `Invalid draft data: ${firstErr}`, 400, parsed.error.flatten());
+      }
       const profile = await saveTeacherDraft(auth.userId, parsed.data);
       return ok(profile);
     }
     if (mode === "complete") {
       const parsed = fullProfileSchema.safeParse(body?.data ?? body);
-      if (!parsed.success) return fail("VALIDATION_ERROR", "Invalid profile data", 400, parsed.error.flatten());
+      if (!parsed.success) {
+        const firstErr = parsed.error.issues[0]?.message || "Invalid profile data";
+        return fail("VALIDATION_ERROR", `Invalid profile data: ${firstErr}`, 400, parsed.error.flatten());
+      }
       const profile = await saveFullTeacherProfile(auth.userId, parsed.data, { complete: true });
       return ok(profile);
     }
     // partial full save (edit profile)
     const parsed = fullProfileSchema.safeParse(body?.data ?? body);
-    if (!parsed.success) return fail("VALIDATION_ERROR", "Invalid profile data", 400, parsed.error.flatten());
+    if (!parsed.success) {
+      const draftParsed = draftSchema.safeParse(body?.data ?? body);
+      if (draftParsed.success) {
+        const profile = await saveTeacherDraft(auth.userId, draftParsed.data);
+        return ok(profile);
+      }
+      const firstErr = parsed.error.issues[0]?.message || "Invalid profile data";
+      return fail("VALIDATION_ERROR", `Invalid profile data: ${firstErr}`, 400, parsed.error.flatten());
+    }
     const profile = await saveFullTeacherProfile(auth.userId, parsed.data);
     return ok(profile);
   } catch (err) {

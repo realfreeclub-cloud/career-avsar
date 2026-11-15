@@ -124,9 +124,23 @@ export async function saveTeacherDraft(userId: string, input: DraftInput): Promi
     }
   }
   if (input.education) for (const [k, v] of Object.entries(stripUndef(input.education as Record<string, unknown>))) $set[`education.${k}`] = v;
-  if (input.experience) for (const [k, v] of Object.entries(stripUndef(input.experience as Record<string, unknown>))) $set[`experience.${k}`] = v;
+  if (input.experience) {
+    for (const [k, v] of Object.entries(stripUndef(input.experience as Record<string, unknown>))) {
+      if (k === "totalYears" || k === "expectedSalaryInr") {
+        if (v === "" || v === null) {
+          // don't set empty string in number field
+        } else {
+          const num = Number(v);
+          if (!Number.isNaN(num)) $set[`experience.${k}`] = num;
+        }
+      } else {
+        $set[`experience.${k}`] = v;
+      }
+    }
+  }
   if (input.preferences) for (const [k, v] of Object.entries(stripUndef(input.preferences as Record<string, unknown>))) $set[`preferences.${k}`] = v;
   await TeacherProfileModel.updateOne({ userId }, { $set, $setOnInsert: { userId } }, { upsert: true });
+  if (input.personal?.email) await UserModel.updateOne({ _id: userId }, { $set: { email: (input.personal.email as string).toLowerCase() } }).catch(() => {});
   return getTeacherProfile(userId);
 }
 
